@@ -1,14 +1,16 @@
-var models  = require('../models');
+var models = require('../models');
 var express = require('express');
-var router  = express.Router();
+var router = express.Router();
 
 router.get('/', function(req, res) {
-  models.User.findAll().then(function(users) {
-    res.render('index', {
-      title: 'Express',
-      users: users
+	// console.log(req.user);
+    models.User.findAll().then(function(users) {
+        res.render('index', {
+            title: 'Express',
+            users: users,
+            user: req.user || null
+        });
     });
-  });
 });
 
 module.exports = router;

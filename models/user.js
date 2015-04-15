@@ -7,21 +7,23 @@ module.exports = function(sequelize, DataTypes) {
     password: DataTypes.STRING,
     salt: DataTypes.STRING
   }, {
-    classMethods: {
-      hashPassword: function(password) {
-      	if (this.salt && password) {
-			return crypto.pbkdf2Sync(password, new Buffer(this.salt, 'base64'), 10000, 64).toString('base64');
-		} else {
-			return password;
-		}
-      }
-    }
+  	instanceMethods: {
+  		authenticate: function(password) {
+  			return this.password === this.hashPassword(password);
+  		},
+  		hashPassword: function(password) {
+  			if(this.salt && password) {
+  				return crypto.pbkdf2Sync(password, new Buffer(this.salt, 'base64'), 10000, 64).toString('base64');
+  			}
+  			return password;
+  		}
+  	}
   });
 
   User.hook('beforeCreate', function(user, options, fn) {
 		if(user.password && user.password.length > 6) {
-	  		user.salt = this.salt = crypto.randomBytes(16).toString('base64');
-	  		user.password = User.hashPassword(user.password);
+	  		user.salt = crypto.randomBytes(16).toString('base64');
+	  		user.password = user.hashPassword(user.password);
 	  	}
 		fn(null, user);
 	});
