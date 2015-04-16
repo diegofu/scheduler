@@ -5,8 +5,9 @@ define(['underscore', 'backbone', 'models/user', 'text!templates/SigninView.html
             this.user = new User();
         },
         render: function() {
-        	console.log('haha');
         	this.$el.html(_.template(SigninView));
+        },
+        events: {
         }
     });
 

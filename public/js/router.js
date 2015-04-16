@@ -1,32 +1,3 @@
-// define(['jquery', 'underscore', 'backbone', 'vm'], function($, _, Backbone, Navbar) {
-// 	var AppRouter = Backbone.Router.extend({
-// 		routes: {
-// 			'*actions': 'defaultRoute',
-// 			'users/signin': 'signin'
-// 		},
-// 		initialize: function() {
-// 			if(this.navbar) {
-// 				this.navbar = new Navbar();
-// 				$('#navbar').html(navbar.render().el);
-// 			}
-// 		},
-// 		signin: function() {
-// 			if(this.sigin) {
-// 				signin =
-// 			}
-// 		}
-// 	});
-
-// 	var initialize = function() {
-// 		var app_router = new AppRouter();
-// 		Backbone.history.start();
-// 	};
-
-// 	return {
-// 		initialize: initialize
-// 	};
-// });
-
 define([
   'jquery',
   'underscore',
@@ -42,8 +13,6 @@ define([
     },
     register: function (route, name, path) {
       var self = this;
-
-      console.log(route);
       this.route(route, name, function () {
         var args = arguments;
 

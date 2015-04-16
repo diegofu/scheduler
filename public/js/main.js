@@ -1,10 +1,11 @@
 require.config({
   paths: {
-    'jquery': 'lib/jquery/dist/jquery',
-    'underscore': 'lib/underscore-amd/underscore',
-    'backbone': 'lib/backbone-amd/backbone',
-    'text': 'lib/text/text',
-    'bootstrap': 'lib/bootstrap-sass/javascripts/bootstrap',
+    jquery: 'lib/jquery/dist/jquery',
+    underscore: 'lib/underscore-amd/underscore',
+    backbone: 'lib/backbone-amd/backbone',
+    text: 'lib/text/text',
+    bootstrap: 'lib/bootstrap-sass/javascripts/bootstrap',
+    templates: '../templates'
   },
   shim: {
   	'bootstrap': {
