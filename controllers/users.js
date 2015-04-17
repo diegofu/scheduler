@@ -1,11 +1,12 @@
 'user strict';
 
 var passport = require('passport');
+var models = require('../models');
 /**
  * Send User
  */
 exports.me = function(req, res) {
-	res.json(null);
+	res.json(req.user || null);
 };
 
 exports.signin = function(req, res) {
@@ -25,4 +26,9 @@ exports.signin = function(req, res) {
             })
         }
     })(req, res);
+}
+
+exports.signup = function(req, res) {
+	console.log(req.body);
+	res.json(models.User.create(req.body));
 }

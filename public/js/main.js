@@ -5,11 +5,15 @@ require.config({
     backbone: 'lib/backbone-amd/backbone',
     text: 'lib/text/text',
     bootstrap: 'lib/bootstrap-sass/javascripts/bootstrap',
-    templates: '../templates'
+    templates: '../templates',
+    serializejson: 'lib/jquery.serializeJSON/jquery.serializejson.min'
   },
   shim: {
-  	'bootstrap': {
+  	bootstrap: {
 		deps: ['jquery']
+  	},
+  	serializejson: {
+  		deps: ['jquery']
   	}
   }
 });

@@ -38,6 +38,7 @@ define([
   var initialize = function(options){
     var router = new AppRouter(options)
     router.register('users/signin', 'Signin', 'views/signin');
+    router.register('signup', 'Signup', 'views/signup');
     Backbone.history.start();
   };
 

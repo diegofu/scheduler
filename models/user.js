@@ -21,6 +21,7 @@ module.exports = function(sequelize, DataTypes) {
   });
 
   User.hook('beforeCreate', function(user, options, fn) {
+  	console.log(user.password);
 		if(user.password && user.password.length > 6) {
 	  		user.salt = crypto.randomBytes(16).toString('base64');
 	  		user.password = user.hashPassword(user.password);
