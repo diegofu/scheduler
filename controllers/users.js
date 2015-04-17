@@ -29,6 +29,9 @@ exports.signin = function(req, res) {
 }
 
 exports.signup = function(req, res) {
-	console.log(req.body);
-	res.json(models.User.create(req.body));
+	models.User.create(req.body).success(function(user) {
+		res.json(user);
+	}).error(function(err) {
+		res.status(400).send(err);
+	});
 }
