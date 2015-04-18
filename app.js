@@ -9,7 +9,6 @@ var session = require('express-session');
 var config = require('./config/config');
 var consolidate = require('consolidate');
 var routes = require('./routes/index');
-var users = require('./routes/users');
 
 var app = express();
 
@@ -37,9 +36,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// app.use('/', routes);
-// app.use('/users', users);
+app.use('/', routes);
 require('./routes/users')(app);
+require('./routes/dashboards')(app);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

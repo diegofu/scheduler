@@ -39,6 +39,11 @@ define([
     var router = new AppRouter(options)
     router.register('users/signin', 'Signin', 'views/signin');
     router.register('signup', 'Signup', 'views/signup');
+
+    // @TODO: Move these to a different router
+    router.register('calendar/create', 'CreateCalendar', 'views/createCalendar');
+    router.register('', 'Dashboard', 'views/dashboard');
+
     Backbone.history.start();
   };
 

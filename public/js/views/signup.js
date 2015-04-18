@@ -10,8 +10,16 @@ define(['underscore', 'backbone', 'models/user', 'text!templates/SignupView.html
         },
         signup: function(e) {
             e.preventDefault();
-            var user = new User($(e.target).serializeJSON());
-            user.save();
+            var user = new User();
+            user.save($(e.target).serializeJSON(), {
+            	success: function(user, response) {
+            		window.location.href = '/dashboard';
+            	},
+            	error: function(user, response) {
+            		console.log(user);
+            		console.log(response);
+            	}
+            });
         }
     });
 

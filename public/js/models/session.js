@@ -14,15 +14,10 @@ define(['jquery', 'underscore', 'backbone'], function($, _, Backbone) {
                 that.set('authenticated', true);
                 that.set('user', JSON.stringify(response.user));
                 if (that.get('redirectFrom')) {
-                    var path = '/home';
-                    Backbone.history.navigate(path, {
-                        trigger: true
-                    });
+                    window.location.href = '/dashboard';
                 } else {
                 	$('#authentication').html('hahaha');
-                    Backbone.history.navigate('/home', {
-                        trigger: true
-                    });
+                    window.location.href = '/dashboard';
                 }
             });
             login.fail(function() {

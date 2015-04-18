@@ -4,12 +4,14 @@ define(['underscore', 'backbone', 'models/session', 'text!templates/NavbarView.h
             this.session = new Session();
         },
         render: function() {
-        	var that = this;
-        	this.session.fetch().done(function() {
-        		that.$el.html(_.template(NavbarView, {session: that.session}));
-        	});
+            var that = this;
+            this.session.fetch().done(function() {
+                that.$el.html(_.template(NavbarView, {
+                    session: that.session
+                }));
+            });
 
-        	return this;
+            return this;
         }
     });
 

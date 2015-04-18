@@ -1,19 +1,19 @@
 "use strict";
 
 module.exports = {
-  up: function(migration, DataTypes, done) {
-    migration
-      .createTable('Users', {
-        username: DataTypes.STRING,
-        password: DataTypes.STRING,
-        salt: DataTypes.STRING
-      })
-      .complete(done)
-  },
+    up: function(migration, DataTypes, done) {
+        migration
+            .createTable('Users', {
+                username: DataTypes.STRING,
+                password: DataTypes.STRING,
+                salt: DataTypes.STRING
+            })
+            .complete(done)
+    },
 
-  down: function(migration, DataTypes, done) {
-    migration
-      .dropTable('Users')
-      .complete(done)
-  }
+    down: function(migration, DataTypes, done) {
+        migration
+            .dropTable('Users')
+            .complete(done)
+    }
 };

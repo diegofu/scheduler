@@ -6,13 +6,33 @@ module.exports = function(sequelize, DataTypes) {
         username: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true
+            unique: true,
+            validate: {
+                isUnique: function(value, next) {
+                    var self = this;
+                    User.find({
+                            where: {
+                                username: value
+                            }
+                        })
+                        .then(function(user) {
+                            // reject if a different user wants to use the same email
+                            if (user && self.id !== user.id) {
+                                return next('Username already in use!');
+                            }
+                            return next();
+                        })
+                        .catch(function(err) {
+                            return next(err);
+                        });
+                }
+            }
         },
         password: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-            	len: [6, 255]
+                len: [6, 255]
             }
         },
         salt: DataTypes.STRING
@@ -28,10 +48,16 @@ module.exports = function(sequelize, DataTypes) {
                 return password;
             }
         }
+    }, {
+    	classMethods: {
+    		associate: function(models) {
+    			User.hasMany(models.Calendar)
+    		}
+    	}
     });
 
     User.hook('beforeCreate', function(user, options, fn) {
-        if (user.password && user.password.length > 6) {
+        if (user.password && user.password.length > 5) {
             user.salt = crypto.randomBytes(16).toString('base64');
             user.password = user.hashPassword(user.password);
         }
