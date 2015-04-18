@@ -1,10 +1,10 @@
 extends layout
 
 block content
-    body
-        | you are logged in
+    | you are logged in
 
-        a(href="#") Home
-        a(href="#/calendar/create") Create Calendar
+    a(href="#") Home
+    a(href="#/calendar/create") Create Calendar
     .container-fluid
         #content.row
+    script(type='text/javascript' src='/js/lib/requirejs/require.js' data-main='/js/mainSecure')

@@ -7,9 +7,9 @@ define([
   var AppRouter = Backbone.Router.extend({
     initialize: function(options) {
       if(!this.navbar) {
-			this.navbar = options.navbar;
-			$('#navbar').html(this.navbar.render().el);
-		}
+            this.navbar = options.navbar;
+            $('#navbar').html(this.navbar.render().el);
+        }
     },
     register: function (route, name, path) {
       var self = this;
@@ -37,8 +37,8 @@ define([
 
   var initialize = function(options){
     var router = new AppRouter(options)
-    router.register('users/signin', 'Signin', 'views/signin');
-    router.register('signup', 'Signup', 'views/signup');
+    router.register('calendar/create', 'CreateCalendar', 'views/createCalendar');
+    router.register('', 'Dashboard', 'views/dashboard');
 
     Backbone.history.start();
   };

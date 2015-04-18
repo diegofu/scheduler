@@ -7,16 +7,13 @@ module.exports = function(app) {
 	var calendars = require('../controllers/calendars');
 	var users = require('../controllers/users');
     app.route('/dashboard').get(function(req, res) {
-    	res.render('dashboard', {
-            title: 'My Dashboard'
-        });
-        // if (req.user) {
-        //     res.render('dashboard', {
-        //         title: 'My Dashboard'
-        //     });
-        // } else {
-        //     res.redirect('/#/users/signin');
-        // }
+        if (req.user) {
+            res.render('dashboard', {
+                title: 'My Dashboard'
+            });
+        } else {
+            res.redirect('/#/users/signin');
+        }
 
     });
     app.route('/calendars')

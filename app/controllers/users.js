@@ -45,3 +45,8 @@ exports.requiresLogin = function(req, res, next) {
 
 	next();
 };
+
+exports.logout = function(req, res) {
+    req.logout();
+    res.redirect('/');
+};
