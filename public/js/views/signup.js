@@ -1,4 +1,4 @@
-define(['underscore', 'backbone', 'models/user', 'text!templates/SignupView.html', 'serializejson'], function(_, Backbone, User, SigninView, serializeJson) {
+define(['underscore', 'backbone', 'models/user', 'text!templates/SignupView.html', 'serializejson'], function(_, Backbone, User, SigninView) {
     var Signin = Backbone.View.extend({
         el: $('#content'),
         initialize: function() {},

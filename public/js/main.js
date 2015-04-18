@@ -6,7 +6,8 @@ require.config({
     text: 'lib/text/text',
     bootstrap: 'lib/bootstrap-sass/javascripts/bootstrap',
     templates: '../templates',
-    serializejson: 'lib/jquery.serializeJSON/jquery.serializejson.min'
+    serializejson: 'lib/jquery.serializeJSON/jquery.serializejson.min',
+    moment: 'lib/moment/moment'
   },
   shim: {
   	bootstrap: {

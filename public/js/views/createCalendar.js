@@ -1,4 +1,4 @@
-define(['underscore', 'backbone', 'models/session', 'text!templates/CreateCalendarView.html'], function(_, Backbone, Session, CreateCalendarView) {
+define(['underscore', 'backbone', 'models/calendar', 'text!templates/CreateCalendarView.html', 'serializejson'], function(_, Backbone, Calendar, CreateCalendarView) {
     var CreateCalendar = Backbone.View.extend({
         el: $('#content'),
         initialize: function() {},
@@ -6,12 +6,13 @@ define(['underscore', 'backbone', 'models/session', 'text!templates/CreateCalend
             this.$el.html(_.template(CreateCalendarView));
         },
         events: {
-            'submit form#login-form': 'login'
+        	'submit form#create-calendar-form': 'createCalendar'
         },
-        login: function(e) {
+        createCalendar: function(e) {
             e.preventDefault();
-            var session = new Session();
-            session.login($(e.target).serializeArray());
+            var calendar = new Calendar();
+            calendar.save($(e.target).serializeJSON());
+            console.log($(e.target).serializeJSON());
         }
     });
 

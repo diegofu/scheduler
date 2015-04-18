@@ -21,6 +21,7 @@
     "bootstrap": "~3.3.4",
     "text": "~2.0.14",
     "bootstrap-sass": "~3.3.4",
-    "jquery.serializeJSON": "~2.5.0"
+    "jquery.serializeJSON": "~2.5.0",
+    "moment": "~2.10.2"
   }
 }
