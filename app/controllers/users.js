@@ -6,11 +6,11 @@ var models = require('../models');
  * Send User
  */
 exports.me = function(req, res) {
-	res.json(req.user || null);
+    res.json(req.user || null);
 };
 
 exports.signin = function(req, res) {
-	passport.authenticate('local', function(err, user, info) {
+    passport.authenticate('local', function(err, user, info) {
         if (err || !user) {
             res.status(400).send(info);
         } else {
@@ -29,21 +29,19 @@ exports.signin = function(req, res) {
 }
 
 exports.signup = function(req, res) {
-	models.User.create(req.body).success(function(user) {
-		res.json(user);
-	}).error(function(err) {
-		res.status(400).send(err);
-	});
+    models.User.create(req.body).success(function(user) {
+        res.json(user);
+    }).error(function(err) {
+        res.status(400).send(err);
+    });
 }
 
 exports.requiresLogin = function(req, res, next) {
-	if (!req.isAuthenticated()) {
-		return res.status(401).send({
-			message: 'User is not logged in'
-		});
-	}
+    if (!req.isAuthenticated()) {
+        res.redirect('/#/users/signin');
+    }
 
-	next();
+    next();
 };
 
 exports.logout = function(req, res) {

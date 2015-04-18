@@ -6,15 +6,10 @@ module.exports = function(app) {
 	var dashboard = require('../controllers/dashboards');
 	var calendars = require('../controllers/calendars');
 	var users = require('../controllers/users');
-    app.route('/dashboard').get(function(req, res) {
-        if (req.user) {
-            res.render('dashboard', {
-                title: 'My Dashboard'
-            });
-        } else {
-            res.redirect('/#/users/signin');
-        }
-
+    app.route('/dashboard').get(users.requiresLogin, function(req, res) {
+        res.render('dashboard', {
+            title: 'My Dashboard'
+        });
     });
     app.route('/calendars')
     	.post(users.requiresLogin, calendars.create)

@@ -14,6 +14,7 @@ module.exports = function(sequelize, DataTypes) {
         classMethods: {
             associate: function(models) {
                 Calendar.belongsTo(models.User);
+                Calendar.hasMany(models.Availability);
             }
         }
     }, {

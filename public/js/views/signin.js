@@ -1,4 +1,4 @@
-define(['underscore', 'backbone', 'models/session', 'text!templates/SigninView.html'], function(_, Backbone, Session, SigninView) {
+define(['underscore', 'backbone', 'models/session', 'text!templates/SigninView.html', 'serializejson'], function(_, Backbone, Session, SigninView) {
     var Signin = Backbone.View.extend({
         el: $('#content'),
         initialize: function() {},
@@ -11,7 +11,7 @@ define(['underscore', 'backbone', 'models/session', 'text!templates/SigninView.h
         login: function(e) {
             e.preventDefault();
             var session = new Session();
-            session.login($(e.target).serializeArray());
+            session.login($(e.target).serializeJSON());
         }
     });
 

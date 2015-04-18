@@ -11,14 +11,7 @@ define(['jquery', 'underscore', 'backbone'], function($, _, Backbone) {
                 type: 'POST'
             });
             login.done(function(response) {
-                that.set('authenticated', true);
-                that.set('user', JSON.stringify(response.user));
-                if (that.get('redirectFrom')) {
-                    window.location.href = '/dashboard';
-                } else {
-                	$('#authentication').html('hahaha');
-                    window.location.href = '/dashboard';
-                }
+                window.location.href = '/dashboard';
             });
             login.fail(function() {
                 Backbone.history.navigate('users/signin', {
