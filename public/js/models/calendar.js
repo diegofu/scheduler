@@ -1,6 +1,6 @@
 define(['underscore', 'backbone'], function(_, Backbone) {
     var Calendar = Backbone.Model.extend({
-        url: 'calendars',
+        urlRoot: '/calendars',
     });
 
     return Calendar;

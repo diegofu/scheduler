@@ -14,19 +14,18 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING,
             validate: {
                 timeOfDay: function(value) {
-                    var re = new RegExp(/([01][0-9]|2[0-3])[0-5][0-9]/);   
+                    var re = new RegExp(/([01][0-9]|2[0-3])[0-5][0-9]/);
                     if(!re.test(value)) {
                         throw new Error('Invalid time');
                     }
                 }
-                
             }
         },
         endTime: {
             type: DataTypes.STRING,
             validate: {
                 timeOfDay: function(value) {
-                    var re = new RegExp(/([01][0-9]|2[0-3])[0-5][0-9]/);   
+                    var re = new RegExp(/([01][0-9]|2[0-3])[0-5][0-9]/);
                     if(!re.test(value)) {
                         throw new Error('Invalid time');
                     }

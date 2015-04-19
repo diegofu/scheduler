@@ -6,7 +6,7 @@ module.exports = function(app) {
 	var dashboard = require('../controllers/dashboards');
 	var calendars = require('../controllers/calendars');
 	var users = require('../controllers/users');
-    app.route('/dashboard').get(users.requiresLogin, function(req, res) {
+    app.route('/dashboard').get(users.redirectLogin, function(req, res) {
         res.render('dashboard', {
             title: 'My Dashboard'
         });
@@ -16,7 +16,9 @@ module.exports = function(app) {
     	.get(calendars.list);
 
     app.route('/calendars/:calendarId')
-    	.get(calendars.calendarByID)
-    	.put(calendars.update).
-    	delete(calendars.delete);
+    	.get(calendars.read)
+    	.put(calendars.update)
+    	.delete(calendars.delete);
+
+    app.param('calendarId', calendars.calendarByID);
 };

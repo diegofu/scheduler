@@ -30,7 +30,13 @@ exports.signin = function(req, res) {
 
 exports.signup = function(req, res) {
     models.User.create(req.body).success(function(user) {
-        res.json(user);
+        req.login(user, function(err) {
+            if (err) {
+                res.status(400).send(err);
+            } else {
+                res.json(user);
+            }
+        });
     }).error(function(err) {
         res.status(400).send(err);
     });
@@ -38,7 +44,17 @@ exports.signup = function(req, res) {
 
 exports.requiresLogin = function(req, res, next) {
     if (!req.isAuthenticated()) {
-        res.redirect('/#/users/signin');
+        return res.status(401).send({
+            message: 'User is not logged in'
+        });
+    }
+
+    next();
+};
+
+exports.redirectLogin = function(req, res, next) {
+    if (!req.isAuthenticated()) {
+        return res.redirect('/#/users/signin');
     }
 
     next();

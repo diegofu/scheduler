@@ -1,5 +1,6 @@
 'user strict';
 
 module.exports = {
-	sessionSecret: 'Kunkkaaaaa'
+	sessionSecret: 'Kunkkaaaaa',
+    sessionCollection: 'sessions'
 };

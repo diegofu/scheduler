@@ -1,17 +1,17 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var passport = require('passport');
-var session = require('express-session');
-var config = require('./config/config');
-var consolidate = require('consolidate');
-var routes = require('./app/routes/index');
+var express = require('express'),
+    path = require('path'),
+    favicon = require('serve-favicon'),
+    logger = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
+    passport = require('passport'),
+    session = require('express-session'),
+    config = require('./config/config'),
+    consolidate = require('consolidate'),
+    routes = require('./app/routes/index'),
+    SessionStore  = require('express-mysql-session');
 
 var app = express();
-
 // view engine setup
 app.set('views', path.join(__dirname, 'app/views'));
 app.set('view engine', 'jade');
@@ -30,7 +30,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret: config.sessionSecret,
     saveUninitialized: true,
-    resave: true
+    resave: true,
+    store: new SessionStore({
+        user: config.username,
+        password: config.password,
+        database: config.database
+    })
 }));
 
 
@@ -48,8 +53,6 @@ app.use(function(req, res, next) {
     err.status = 404;
     next(err);
 });
-
-// error handlers
 
 // development error handler
 // will print stacktrace

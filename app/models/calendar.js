@@ -8,7 +8,7 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
         },
         notes: {
-        	type: DataTypes.TEXT
+            type: DataTypes.TEXT
         }
     }, {
         classMethods: {
