@@ -2,6 +2,7 @@
 
 var models  = require('../models');
 
+// Everything in here should be secured
 module.exports = function(app) {
 	var dashboard = require('../controllers/dashboards');
 	var calendars = require('../controllers/calendars');
@@ -13,12 +14,12 @@ module.exports = function(app) {
     });
     app.route('/calendars')
     	.post(users.requiresLogin, calendars.create)
-    	.get(calendars.list);
+    	.get(users.redirectLogin, calendars.list);
 
     app.route('/calendars/:calendarId')
     	.get(calendars.read)
-    	.put(calendars.update)
-    	.delete(calendars.delete);
+    	.put(users.requiresLogin, calendars.update)
+    	.delete(users.requiresLogin, calendars.delete);
 
     app.param('calendarId', calendars.calendarByID);
 };

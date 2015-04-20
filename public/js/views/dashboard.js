@@ -1,9 +1,14 @@
-define(['underscore', 'backbone', 'text!templates/DashboardView.html'], function(_, Backbone, DashboardView) {
+define(['underscore', 'backbone', 'collections/calendars', 'text!templates/DashboardTemplate.html'], function(_, Backbone, CalendarCollection, DashboardTemplate) {
     var Dashboard = Backbone.View.extend({
     	el: $('#content'),
-        initialize: function() {},
+        initialize: function() {
+            this.calendarColleciton = new CalendarCollection;
+        },
         render: function() {
-            this.$el.html(_.template(DashboardView));
+            var that = this;
+            this.calendarColleciton.fetch().done(function() {
+                that.$el.html(_.template(DashboardTemplate, {calendars: that.calendarColleciton}));
+            });
         }
     });
 

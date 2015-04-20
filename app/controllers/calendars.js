@@ -12,7 +12,7 @@ exports.create = function(req, res) {
         return calendar.save({
             transaction: t
         }).then(function(_calendar) {
-            return models.sequelize.Promise.map(req.body.availabilities, function(a) {
+            return models.sequelize.Promise.map(req.body.Availabilities, function(a) {
                 var availability = models.Availability.build(a);
                 availability.setCalendar(_calendar, {
                     save: false
@@ -30,7 +30,9 @@ exports.create = function(req, res) {
 }
 
 exports.list = function(req, res) {
-    res.status(400).send('err');
+    models.Calendar.findAll({where: {UserId: req.user.id}}).then(function(calendars) {
+        return res.json(calendars);
+    })
 }
 
 exports.update = function(req, res) {

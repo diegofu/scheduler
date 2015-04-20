@@ -1,9 +1,11 @@
-define(['underscore', 'backbone', 'models/calendar', 'text!templates/CreateCalendarTemplate.html', 'serializejson'], function(_, Backbone, Calendar, CreateCalendarTemplate) {
+define(['underscore', 'backbone', 'models/calendar', 'text!templates/CalendarTemplate.html', 'serializejson'], function(_, Backbone, Calendar, CalendarTemplate) {
     var CreateCalendar = Backbone.View.extend({
         el: $('#content'),
-        initialize: function() {},
+        initialize: function() {
+            this.calendar = new Calendar();
+        },
         render: function() {
-            this.$el.html(_.template(CreateCalendarView));
+            this.$el.html(_.template(CalendarTemplate, {calendar: this.calendar}));
         },
         events: {
         	'submit form#create-calendar-form': 'createCalendar'
@@ -11,7 +13,6 @@ define(['underscore', 'backbone', 'models/calendar', 'text!templates/CreateCalen
         createCalendar: function(e) {
             e.preventDefault();
             var calendar = new Calendar();
-            console.log($(e.target).serializeJSON());
             calendar.save($(e.target).serializeJSON());
         }
     });

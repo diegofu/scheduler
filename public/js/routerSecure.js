@@ -38,7 +38,7 @@ define([
   var initialize = function(options){
     var router = new AppRouter(options)
     router.register('calendar/create', 'CreateCalendar', 'views/createCalendar');
-    router.register('calendar/:id', 'CalendarView', 'views/calendar');
+    router.register('calendars/:id', 'CalendarView', 'views/calendar');
     router.register('', 'Dashboard', 'views/dashboard');
 
     Backbone.history.start();

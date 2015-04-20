@@ -1,0 +1,7 @@
+Dashboard!
+
+<% _.each(calendars.models, function(calendar) { %>
+    <a href="#/calendars/<%= calendar.get('id') %>">
+        Edit Calendar <%= calendar.get('name') %>
+    </a>
+<% }) %>
