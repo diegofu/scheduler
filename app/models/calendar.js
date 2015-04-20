@@ -9,6 +9,15 @@ module.exports = function(sequelize, DataTypes) {
         },
         notes: {
             type: DataTypes.TEXT
+        },
+        defaultLength : {
+            type: DataTypes.INTEGER
+        },
+        minLength: {
+            type: DataTypes.INTEGER
+        },
+        maxLength: {
+            type: DataTypes.INTEGER
         }
     }, {
         classMethods: {
