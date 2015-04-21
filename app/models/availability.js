@@ -8,7 +8,8 @@ module.exports = function(sequelize, DataTypes) {
             validate: {
                 min: 1,
                 max: 7
-            }
+            },
+            allowNull: false
         },
         startTime: {
             type: DataTypes.STRING,
@@ -19,7 +20,8 @@ module.exports = function(sequelize, DataTypes) {
                         throw new Error('Invalid time');
                     }
                 }
-            }
+            },
+            allowNull: false
         },
         endTime: {
             type: DataTypes.STRING,
@@ -30,7 +32,8 @@ module.exports = function(sequelize, DataTypes) {
                         throw new Error('Invalid time');
                     }
                 }
-            }
+            },
+            allowNull: false
         }
     }, {
         classMethods: {
