@@ -38,7 +38,10 @@ define(['underscore', 'backbone'], function(_, Backbone) {
                     startTime: "0900",
                     endTime: "1800",
                 }
-            ]
+            ],
+            defaultLength: 60,
+            minLength: 60,
+            maxLength: 60
         }
     });
 
