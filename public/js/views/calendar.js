@@ -31,11 +31,13 @@ define([
         },
         saveCalendar: function(e) {
             e.preventDefault();
+            $('#save-calendar-form-button').attr('disabled', 'disabled');
             this.calendar.save($(e.target).serializeJSON(), {
                 success: function(model, response) {
                     // update the model to the returned model
                     console.log(model);
                     console.log(response);
+                    $('#save-calendar-form-button').removeAttr('disabled');
                 },
                 error: function(model, response) {
                     console.log(model);
@@ -49,6 +51,23 @@ define([
                 $(e.target).parents('.form-group').addClass('has-error');
                 return;
             }
+
+
+            var displaySlot = parseInt(e.target.value);
+            var slots = this.calculateSlots(displaySlot);
+
+            var $defaultLength = $('#calendar-defaultLength');
+            var $minLength = $('#calendar-minLength');
+            var $maxLength = $('#calendar-maxLength');
+            $defaultLength.empty();
+            $minLength.empty();
+            $maxLength.empty();
+            $.each(slots, function(key, slot) {
+                $defaultLength.append($('<option></option>').attr('value', slot).text(slot));
+                $minLength.append($('<option></option>').attr('value', slot).text(slot));
+                $maxLength.append($('<option></option>').attr('value', slot).text(slot));
+            });
+
         }, 500, false),
         calculateSlots: function(length) {
             var slots = [];

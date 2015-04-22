@@ -12,13 +12,13 @@ define(['underscore', 'backbone', 'models/user', 'text!templates/SignupView.html
             e.preventDefault();
             var user = new User();
             user.save($(e.target).serializeJSON(), {
-            	success: function(user, response) {
-            		window.location.href = '/dashboard';
-            	},
-            	error: function(user, response) {
-            		console.log(user);
-            		console.log(response);
-            	}
+                success: function(user, response) {
+                    window.location.href = '/dashboard';
+                },
+                error: function(user, response) {
+                    console.log(user);
+                    console.log(response);
+                }
             });
         }
     });

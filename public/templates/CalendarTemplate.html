@@ -1,5 +1,9 @@
 <form id="save-calendar-form" class="col-md-6 col-md-offset-3 text-center">
-    <h2>Create a new calendar</h2>
+    <% if(calendar.has('name')) { %>
+        <h2><%= calendar.get('name') %></h2>
+    <% } else { %>
+        <h2>Create a new calendar</h2>
+    <% } %>
     <fieldset>
         <input class="form-control" type="text" id="calendar-name" name="name" placeholder="Calendar Name" value="<%= calendar.get('name') %>" required>
         <span class="help-block"></span>
@@ -79,8 +83,8 @@
                 </select>
             </div>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">
-            <% if(calendar.get('id')) { %>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" id="save-calendar-form-button">
+            <% if(calendar.has('id')) { %>
                 Save
             <% } else { %>
                 Create
