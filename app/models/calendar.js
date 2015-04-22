@@ -8,8 +8,7 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false
         },
         notes: {
-            type: DataTypes.TEXT,
-            allowNull: false
+            type: DataTypes.TEXT
         },
         defaultLength: {
             type: DataTypes.INTEGER,
@@ -33,6 +32,7 @@ module.exports = function(sequelize, DataTypes) {
                     onDelete: 'CASCADE'
                 });
                 Calendar.hasMany(models.Availability);
+                Calendar.hasMany(models.Booking);
             },
             createCalendar: function(calendar, user) {
                 return sequelize.transaction(function(t) {

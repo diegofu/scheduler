@@ -16,11 +16,15 @@ define([
             var that = this;
             this.calendar.fetch().done(function() {
                 var slots = that.calculateSlots(that.calendar.get('defaultLength'));
-                that.$el.html(_.template(CalendarTemplate, {
+                var compiledTemplate = _.template(CalendarTemplate, {
                     calendar: that.calendar,
                     moment: moment,
                     slots: slots
-                }));
+                });
+                that.$el.html(compiledTemplate);
+                that.$('.datetimepicker').datetimepicker({
+                    format: 'H:mm',
+                });
             });
 
             return this;

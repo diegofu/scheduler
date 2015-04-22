@@ -21,10 +21,10 @@ Scheduler uses a number of open source projects to work properly:
 
 ### Installation
 
-You need [nodemon], [MochaJS] installed globally:
+You need [nodemon], [MochaJS], [Bower] installed globally:
 
 ```sh
-$ npm install -g nodemon mocha
+$ npm install -g nodemon mocha bower
 ```
 You will also need [MySQL] installed and change  the db config accordingly inside /config/env/
 
@@ -51,3 +51,4 @@ $ NODE_ENV=test mocha app/tests
 [ChaiJS]:http://chaijs.com/
 [MochaJS]:http://mochajs.org/
 [nodemon]:http://nodemon.io/
+[Bower]:http://bower.io/
