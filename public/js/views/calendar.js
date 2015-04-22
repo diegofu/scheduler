@@ -1,4 +1,12 @@
-define(['underscore', 'backbone', 'models/calendar', 'text!templates/CalendarTemplate.html', 'serializejson'], function(_, Backbone, Calendar, CalendarTemplate) {
+define([
+    'underscore',
+    'backbone',
+    'models/calendar',
+    'text!templates/CalendarTemplate.html',
+    'moment',
+    'serializejson',
+    'datetimepicker'
+], function(_, Backbone, Calendar, CalendarTemplate, moment) {
     var CalendarView = Backbone.View.extend({
         el: $('#content'),
         initialize: function(options) {
@@ -7,7 +15,10 @@ define(['underscore', 'backbone', 'models/calendar', 'text!templates/CalendarTem
         render: function() {
             var that = this;
             this.calendar.fetch().done(function() {
-                that.$el.html(_.template(CalendarTemplate, {calendar: that.calendar}));
+                that.$el.html(_.template(CalendarTemplate, {
+                    calendar: that.calendar,
+                    moment: moment
+                }));
             });
 
             return this;

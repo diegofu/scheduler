@@ -1,4 +1,4 @@
-<form id="save-calendar-form" class="col-md-4 col-md-offset-4 text-center">
+<form id="save-calendar-form" class="col-md-6 col-md-offset-3 text-center">
     <h2>Create a new calendar</h2>
     <fieldset>
         <input class="form-control" type="text" id="calendar-name" name="name" placeholder="Calendar Name" value="<%= calendar.get('name') %>" required>
@@ -9,8 +9,39 @@
         <% _.each(calendar.get('Availabilities'), function(availability) { %>
             <input type="hidden" class="input-medium form-control" name="Availabilities[][dayOfWeek]" value="<%= availability.dayOfWeek %>">
             <input type="hidden" class="input-medium form-control" name="Availabilities[][id]" value="<%= availability.id %>">
-            <input type="text" class="input-medium form-control" name="Availabilities[][startTime]" value="<%= availability.startTime %>">
-            <input type="text" class="input-medium form-control" name="Availabilities[][endTime]" value="<%= availability.endTime %>">
+            <div class="row">
+                <div class="col-sm-2">
+                    <%= moment().isoWeekday(availability.dayOfWeek).format('dddd') %>
+                </div>
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <div class="input-group date datetimepicker">
+                            <input type="text" class="form-control" name="Availabilities[][startTime]" value="<%= availability.startTime %>">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-time"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <div class="input-group date datetimepicker" id="datetimepicker3">
+                            <input type="text" class="form-control" name="Availabilities[][endTime]" value="<%= availability.endTime %>">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-time"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                $(function() {
+                    $('.datetimepicker').datetimepicker({
+                        format: 'H:mm',
+                    });
+                });
+
+                </script>
+            </div>
         <% }) %>
         <button class="btn btn-lg btn-primary btn-block" type="submit">
             <% if(calendar.get('id')) { %>

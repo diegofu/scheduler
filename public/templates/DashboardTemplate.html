@@ -1,7 +1,15 @@
-Dashboard!
-
 <% _.each(calendars.models, function(calendar) { %>
-    <a href="#/calendars/<%= calendar.get('id') %>">
-        Edit Calendar <%= calendar.get('name') %>
-    </a>
+    <div class="well">
+        <div class="row">
+            <div class="col-md-6"><%= calendar.get('name') %></div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <a href="#/calendars/<%= calendar.get('id') %>" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                        Edit Calendar <%= calendar.get('name') %>
+                    </a>
+            </div>
+        </div>
+    </div>
 <% }) %>

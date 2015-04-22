@@ -7,15 +7,6 @@ var chai = require('chai'),
 chai.use(chaiAsPromised);
 chai.should();
 
-
-var logOutput = '\n';
-
-function log(msg) {
-    logOutput += msg + '\n';
-}
-
-// Load model definitions
-// models = require('../../models')(sequelize);
 var user = 'user';
 // Run model tests
 describe('Model tests', function() {
@@ -59,16 +50,16 @@ describe('Model tests', function() {
                 UserId: 1,
                 Availabilities: [{
                     dayOfWeek: 1,
-                    startTime: '0900',
-                    endTime: '1800'
+                    startTime: '9:00',
+                    endTime: '18:00'
                 }, {
                     dayOfWeek: 2,
-                    startTime: '0900',
-                    endTime: '1800'
+                    startTime: '9:00',
+                    endTime: '18:00'
                 }, {
                     dayOfWeek: 3,
-                    startTime: '0900',
-                    endTime: '1800'
+                    startTime: '9:00',
+                    endTime: '18:00'
                 }]
 
             }, user).should.not.be.rejected.notify(done);
@@ -99,9 +90,8 @@ describe('Model tests', function() {
             }, user).should.be.rejected.notify(done);
         })
     });
-    //After all the tests have run, output all the sequelize logging.
+    //After all the tests have run
     after(function() {
-        console.log(logOutput);
+
     });
-    // require('./article_model')(sequelize, models);
 });

@@ -22,6 +22,7 @@
     "text": "~2.0.14",
     "bootstrap-sass": "~3.3.4",
     "jquery.serializeJSON": "~2.5.0",
-    "moment": "~2.10.2"
+    "moment": "~2.10.2",
+    "eonasdan-bootstrap-datetimepicker": "~4.7.14"
   }
 }
