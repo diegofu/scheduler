@@ -43,6 +43,42 @@
                 </script>
             </div>
         <% }) %>
+        <div class="row form-group">
+            <div class="col-sm-4">Display</div>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" id="calendar-displaySlot" value="<%= calendar.get('defaultLength') %>" required>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-4">Default Length</div>
+            <div class="col-sm-8">
+                <select class="form-control" id="calendar-defaultLength" name="defaultLength" value="<%= calendar.get('defaultLength') %>" required>
+                    <% _.each(slots, function(slot) { %>
+                        <option <%= slot == calendar.get('defaultLength') ? 'selected' : '' %>><%= slot %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-4">Minimum Length</div>
+            <div class="col-sm-8">
+                <select class="form-control" id="calendar-minLength" name="minLength" value="<%= calendar.get('minLength') %>" required>
+                    <% _.each(slots, function(slot) { %>
+                        <option <%= slot == calendar.get('minLength') ? 'selected' : '' %>><%= slot %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-4">Maximum Length</div>
+            <div class="col-sm-8">
+                <select class="form-control" id="calendar-maxLength" name="maxLength" value="<%= calendar.get('maxLength') %>" required>
+                    <% _.each(slots, function(slot) { %>
+                        <option <%= slot == calendar.get('maxLength') ? 'selected' : '' %>><%= slot %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">
             <% if(calendar.get('id')) { %>
                 Save

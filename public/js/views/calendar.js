@@ -15,21 +15,25 @@ define([
         render: function() {
             var that = this;
             this.calendar.fetch().done(function() {
+                var slots = that.calculateSlots(that.calendar.get('defaultLength'));
                 that.$el.html(_.template(CalendarTemplate, {
                     calendar: that.calendar,
-                    moment: moment
+                    moment: moment,
+                    slots: slots
                 }));
             });
 
             return this;
         },
         events: {
-            'submit form#save-calendar-form': 'saveCalendar'
+            'submit form#save-calendar-form': 'saveCalendar',
+            'keyup #calendar-displaySlot': 'updateLength'
         },
         saveCalendar: function(e) {
             e.preventDefault();
             this.calendar.save($(e.target).serializeJSON(), {
                 success: function(model, response) {
+                    // update the model to the returned model
                     console.log(model);
                     console.log(response);
                 },
@@ -39,6 +43,19 @@ define([
                 },
                 // wait: true
             });
+        },
+        updateLength: _.debounce(function(e) {
+            if(e.target.value < 1 || e.target.value > 1440) {
+                $(e.target).parents('.form-group').addClass('has-error');
+                return;
+            }
+        }, 500, false),
+        calculateSlots: function(length) {
+            var slots = [];
+            for(var i = length; i <= 1440; i += length) {
+                slots.push(i);
+            }
+            return slots;
         }
 
     });
