@@ -1,0 +1,30 @@
+<%
+var internal = _.min([calendar.get('defaultLength'), calendar.get('minLength')]);
+var startTime = moment(minAvailability.startTime, 'H:mm').unix();
+var endTime = moment(maxAvailability.endTime, 'H:mm').unix();
+
+for(var j = startTime; j <= endTime; j += internal * 60) {
+%>
+<div class="row">
+    <%
+    var currentMoment = moment.unix(j);
+
+    %>
+        <div class="col-md-1 text-center">
+            <div><%= currentMoment.format('ddd') %>
+            </div>
+            <div><%= currentMoment.format('YY-MMM-D HH:mm:s') %>
+            </div>
+        </div>
+    <%
+    for(var i = 0; i < 7; i++) {
+        currentMoment = currentMoment.add(i, 'days');
+
+    }
+%>
+</div>
+
+<%
+}
+%>
+

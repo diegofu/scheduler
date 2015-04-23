@@ -70,3 +70,12 @@ exports.calendarByID = function(req, res, next, id) {
 exports.read = function(req, res) {
     res.json(req.calendar);
 }
+
+exports.hasAuthorization = function(req, res, next) {
+    if (req.calendar.UserId !== req.user.id) {
+        return res.status(403).send({
+            message: 'User is not authorized'
+        });
+    }
+    next();
+};

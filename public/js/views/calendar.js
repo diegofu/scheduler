@@ -3,10 +3,11 @@ define([
     'backbone',
     'models/calendar',
     'text!templates/CalendarTemplate.html',
+    'text!templates/BookingTemplate.html',
     'moment',
     'serializejson',
     'datetimepicker'
-], function(_, Backbone, Calendar, CalendarTemplate, moment) {
+], function(_, Backbone, Calendar, CalendarTemplate, BookingTemplate, moment) {
     var CalendarView = Backbone.View.extend({
         el: $('#content'),
         initialize: function(options) {
@@ -15,16 +16,20 @@ define([
         render: function() {
             var that = this;
             this.calendar.fetch().done(function() {
-                var slots = that.calculateSlots(that.calendar.get('defaultLength'));
-                var compiledTemplate = _.template(CalendarTemplate, {
+                var minLength = _.min([that.calendar.get('defaultLength'), that.calendar.get('minLength'), that.calendar.get('maxLength')]);
+                var slots = that.calculateSlots(minLength);
+                that.$el.html(_.template(CalendarTemplate, {
                     calendar: that.calendar,
                     moment: moment,
-                    slots: slots
-                });
-                that.$el.html(compiledTemplate);
+                    slots: slots,
+                    minLength: minLength
+                }));
+
                 that.$('.datetimepicker').datetimepicker({
                     format: 'H:mm',
                 });
+
+                that.renderBooking(that.calendar);
             });
 
             return this;
@@ -32,6 +37,18 @@ define([
         events: {
             'submit form#save-calendar-form': 'saveCalendar',
             'keyup #calendar-displaySlot': 'updateLength'
+        },
+        renderBooking: function(calendar) {
+                $('#bookingTemplate').html(_.template(BookingTemplate, {
+                    calendar: calendar,
+                    moment: moment,
+                    minAvailability: _.min(calendar.get('Availabilities'), function(availability) {
+                        return moment(availability.startTime, 'H:mm').unix();
+                    }),
+                    maxAvailability: _.max(calendar.get('Availabilities'), function(availability) {
+                        return moment(availability.end, 'H:mm').unix();
+                    })
+                }));
         },
         saveCalendar: function(e) {
             e.preventDefault();
@@ -51,7 +68,7 @@ define([
             });
         },
         updateLength: _.debounce(function(e) {
-            if(e.target.value < 1 || e.target.value > 1440) {
+            if (e.target.value < 1 || e.target.value > 1440) {
                 $(e.target).parents('.form-group').addClass('has-error');
                 return;
             }
@@ -75,7 +92,7 @@ define([
         }, 500, false),
         calculateSlots: function(length) {
             var slots = [];
-            for(var i = length; i <= 1440; i += length) {
+            for (var i = length; i <= 1440; i += length) {
                 slots.push(i);
             }
             return slots;

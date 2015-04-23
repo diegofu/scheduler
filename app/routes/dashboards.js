@@ -18,8 +18,8 @@ module.exports = function(app) {
 
     app.route('/calendars/:calendarId')
     	.get(calendars.read)
-    	.put(users.requiresLogin, calendars.update)
-    	.delete(users.requiresLogin, calendars.delete);
+    	.put(users.requiresLogin, calendars.hasAuthorization, calendars.update)
+    	.delete(users.requiresLogin, calendars.hasAuthorization, calendars.delete);
 
     app.param('calendarId', calendars.calendarByID);
 };
