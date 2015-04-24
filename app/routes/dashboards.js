@@ -22,4 +22,10 @@ module.exports = function(app) {
     	.delete(users.requiresLogin, calendars.hasAuthorization, calendars.delete);
 
     app.param('calendarId', calendars.calendarByID);
+
+    app.route('/bookings').
+        post(function(req, res) {
+            console.log(req);
+        });
+
 };

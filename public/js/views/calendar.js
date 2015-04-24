@@ -3,11 +3,11 @@ define([
     'backbone',
     'models/calendar',
     'text!templates/CalendarTemplate.html',
-    'text!templates/BookingTemplate.html',
+    'text!templates/GridTemplate.html',
     'moment',
     'serializejson',
     'datetimepicker'
-], function(_, Backbone, Calendar, CalendarTemplate, BookingTemplate, moment) {
+], function(_, Backbone, Calendar, CalendarTemplate, GridTemplate, moment) {
     var CalendarView = Backbone.View.extend({
         el: $('#content'),
         initialize: function(options) {
@@ -39,7 +39,7 @@ define([
             'keyup #calendar-displaySlot': 'updateLength'
         },
         renderBooking: function(calendar) {
-                $('#bookingTemplate').html(_.template(BookingTemplate, {
+                $('#gridTemplate').html(_.template(GridTemplate, {
                     calendar: calendar,
                     moment: moment,
                     minAvailability: _.min(calendar.get('Availabilities'), function(availability) {

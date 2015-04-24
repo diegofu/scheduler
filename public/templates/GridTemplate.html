@@ -1,0 +1,35 @@
+<div class="row">
+    <%
+    var internal = _.min([calendar.get('defaultLength'), calendar.get('minLength')]);
+	var startMoment = moment(minAvailability.startTime, 'H:mm');
+	var endMoment = moment(maxAvailability.endTime, 'H:mm');
+	print(calendar.slotBooked());
+    for(var i = 0; i < 7; i++) {
+    %>
+        <div class="col-md-1 text-center">
+            <div>
+                <%= startMoment.format('ddd') %>
+            </div>
+            <div>
+                <%= startMoment.format('YY-MMM-D') %>
+            </div>
+
+            <% for(var j = startMoment.unix(); j <= endMoment.unix(); j += internal * 60) { %>
+				<div class="row">
+                    <a href="#/calendars/<%= calendar.get('id') %>/<%= j %>" class="btn btn-success col-sm-11 col-sm-offset-1" <%= calendar.slotBooked(j) ? 'disabled' : '' %>>
+                        <%= moment.unix(j).format('H:mm') %>
+                    </a>
+				</div>
+
+			<% } %>
+        </div>
+    <%
+        startMoment = startMoment.add(1, 'days');
+		endMoment = endMoment.add(1, 'days');
+    }
+    %>
+
+</div>
+
+
+
