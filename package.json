@@ -29,7 +29,17 @@
   "devDependencies": {
     "chai": "^2.2.0",
     "chai-as-promised": "^5.0.0",
-    "debug": "^2.0.0",
-    "should": "^6.0.1"
+    "karma": "^0.12.31",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^0.1.8",
+    "karma-firefox-launcher": "^0.1.4",
+    "karma-mocha": "^0.1.10",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "karma-requirejs": "^0.2.2",
+    "karma-sinon": "^1.0.4",
+    "mocha": "^2.2.4",
+    "requirejs": "^2.1.17",
+    "should": "^6.0.1",
+    "sinon": "^1.14.1"
   }
 }

@@ -1,51 +1,33 @@
-<%
-var internal = _.min([calendar.get('defaultLength'), calendar.get('minLength')]);
-var startTime = moment(minAvailability.startTime, 'H:mm').unix();
-var endTime = moment(maxAvailability.endTime, 'H:mm').unix();
-%>
-
-<div class="row headers">
-    <%
-    var currentMoment = moment.unix(startTime);
-    for(var i = 0; i < 7; i++) {
-        currentMoment = currentMoment.add(i, 'days');
-
-    %>
-        <div class="col-md-1 text-center">
-            <div>
-                <%= currentMoment.format('ddd') %>
-            </div>
-            <div>
-                <%= currentMoment.format('YY-MMM-D') %>
-            </div>
-        </div>
-    <%
-    }
-    %>
-</div>
-
-<%
-for(var j = startTime; j <= endTime; j += internal * 60) {
-%>
 <div class="row">
     <%
-    var currentMoment = moment.unix(j);
+    var internal = _.min([calendar.get('defaultLength'), calendar.get('minLength')]);
+	var startMoment = moment(minAvailability.startTime, 'H:mm');
+	var endMoment = moment(maxAvailability.endTime, 'H:mm');
+	print(calendar.slotBooked());
     for(var i = 0; i < 7; i++) {
-        currentMoment = currentMoment.add(i, 'days');
-
     %>
         <div class="col-md-1 text-center">
             <div>
-                <%= currentMoment.format('H:mm') %>
+                <%= startMoment.format('ddd') %>
             </div>
+            <div>
+                <%= startMoment.format('YY-MMM-D') %>
+            </div>
+
+            <% for(var j = startMoment.unix(); j <= endMoment.unix(); j += internal * 60) { %>
+				<div>
+					<%= moment.unix(j).format('H:mm') %>
+				</div>
+
+			<% } %>
         </div>
     <%
+        startMoment = startMoment.add(1, 'days');
+		endMoment = endMoment.add(1, 'days');
     }
     %>
+
 </div>
 
-<%
-}
-%>
 
 
