@@ -1,7 +1,9 @@
 <form class="col-small-12" id="save-booking-form">
     <h2>New Booking</h2>
     <fieldset>
-    	<input type="hidden" name="CalendarId" value="<%= options.id %>">
+    	<input type="hidden" name="CalendarId" value="<%= calendar.get('id') %>">
+        <input type="hidden" name="startTime" value="<%= booking.get('startTime') %>">
+        <input type="hidden" name="endTime" value="<%= booking.get('endTime') %>">
     	<%= time %>
 
         <input class="form-control" type="email" id="signup-password-input" name="email" required>

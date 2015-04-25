@@ -7,6 +7,8 @@ module.exports = function(app) {
 	var dashboard = require('../controllers/dashboards');
 	var calendars = require('../controllers/calendars');
 	var users = require('../controllers/users');
+    var bookings = require('../controllers/bookings');
+
     app.route('/dashboard').get(users.redirectLogin, function(req, res) {
         res.render('dashboard', {
             title: 'My Dashboard'
@@ -23,9 +25,10 @@ module.exports = function(app) {
 
     app.param('calendarId', calendars.calendarByID);
 
-    app.route('/bookings').
-        post(function(req, res) {
-            console.log(req);
-        });
+    app.route('/bookings')
+        .get(bookings.create)
+        .post(bookings.create);
 
+    app.route('/bookings/:bookingId')
+        .put(bookings.create);
 };

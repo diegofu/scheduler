@@ -35,9 +35,6 @@ define(['underscore', 'backbone', 'moment'], function(_, Backbone, moment) {
             minLength: 60,
             maxLength: 60
         },
-        test: function() {
-            return this.has('id');
-        },
         slotBooked: function(startTimestamp) {
             if(!this.has('id') || _.isEmpty(this.get('Bookings'))) {
                 return false;

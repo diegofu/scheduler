@@ -24,15 +24,15 @@ module.exports = function(sequelize, DataTypes) {
         }
     }, {
         classMethods: {
-            associate: function(models) {
-                Calendar.belongsTo(models.User, {
+            associate: function() {
+                Calendar.belongsTo(sequelize.models.User, {
                     foreignKey: {
                         allowNull: false,
                     },
                     onDelete: 'CASCADE'
                 });
-                Calendar.hasMany(models.Availability);
-                Calendar.hasMany(models.Booking);
+                Calendar.hasMany(sequelize.models.Availability);
+                Calendar.hasMany(sequelize.models.Booking);
             },
             createCalendar: function(calendar, user) {
                 return sequelize.transaction(function(t) {

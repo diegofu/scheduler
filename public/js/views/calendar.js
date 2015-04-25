@@ -39,16 +39,16 @@ define([
             'keyup #calendar-displaySlot': 'updateLength'
         },
         renderBooking: function(calendar) {
-                $('#gridTemplate').html(_.template(GridTemplate, {
-                    calendar: calendar,
-                    moment: moment,
-                    minAvailability: _.min(calendar.get('Availabilities'), function(availability) {
-                        return moment(availability.startTime, 'H:mm').unix();
-                    }),
-                    maxAvailability: _.max(calendar.get('Availabilities'), function(availability) {
-                        return moment(availability.end, 'H:mm').unix();
-                    })
-                }));
+            $('#gridTemplate').html(_.template(GridTemplate, {
+                calendar: calendar,
+                moment: moment,
+                minAvailability: _.min(calendar.get('Availabilities'), function(availability) {
+                    return moment(availability.startTime, 'H:mm').unix();
+                }),
+                maxAvailability: _.max(calendar.get('Availabilities'), function(availability) {
+                    return moment(availability.end, 'H:mm').unix();
+                })
+            }));
         },
         saveCalendar: function(e) {
             e.preventDefault();

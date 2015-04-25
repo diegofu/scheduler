@@ -37,8 +37,8 @@ module.exports = function(sequelize, DataTypes) {
         }
     }, {
         classMethods: {
-            associate: function(models) {
-                Availability.belongsTo(models.Calendar, {
+            associate: function() {
+                Availability.belongsTo(sequelize.models.Calendar, {
                     foreignKey: {
                         allowNull: false,
                     },

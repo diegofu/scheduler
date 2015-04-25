@@ -1,9 +1,9 @@
 define(['jquery', 'underscore', 'backbone'], function($, _, Backbone) {
-    var Session = Backbone.Model.extend({
-        url: '/bookings',
+    var Booking = Backbone.Model.extend({
+        urlRoot: '/bookings',
         initialize: function() {
         }
     });
 
-    return Session;
+    return Booking;
 });
