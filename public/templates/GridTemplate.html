@@ -3,6 +3,8 @@
     var internal = _.min([calendar.get('defaultLength'), calendar.get('minLength')]);
 	var startMoment = moment(minAvailability.startTime, 'H:mm');
 	var endMoment = moment(maxAvailability.endTime, 'H:mm');
+    var currentStart = moment(calendar.get('Availabilities')[0].startTime, 'H:mm');
+    var currentEnd = moment(calendar.get('Availabilities')[0].endTime, 'H:mm');
 
     for(var i = 0; i < 7; i++) {
     %>
@@ -14,9 +16,21 @@
                 <%= startMoment.format('YY-MMM-D') %>
             </div>
 
+            <%
+                var currentStart = moment(calendar.get('Availabilities')[i].startTime, 'H:mm');
+                var currentEnd = moment(calendar.get('Availabilities')[i].endTime, 'H:mm');
+                currentStart.date(startMoment.date()).month(startMoment.month()).year(startMoment.year());
+                currentEnd.date(endMoment.date()).month(endMoment.month()).year(endMoment.year());
+            %>
             <% for(var j = startMoment.unix(); j <= endMoment.unix(); j += internal * 60) { %>
-				<div class="row">
-                    <a href="#/calendars/<%= calendar.get('id') %>/<%= j %>" class="btn btn-success col-sm-11 col-sm-offset-1" <%= calendar.slotBooked(j) ? 'disabled' : '' %>>
+                <div class="row">
+                    <% 
+                        var disabled = '';
+                        if( currentStart.unix() > j || currentEnd.unix() < j || calendar.slotBooked(j)) {
+                            disabled = 'disabled';
+                        }
+                    %>
+                    <a href="#/calendars/<%= calendar.get('id') %>/<%= j %>" class="btn btn-success col-sm-11 col-sm-offset-1" <%= disabled %>>
                         <%= moment.unix(j).format('H:mm') %>
                     </a>
 				</div>

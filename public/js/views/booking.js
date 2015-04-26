@@ -12,7 +12,7 @@ define([
         initialize: function(options) {
             this.options = options;
             this.calendar = new Calendar({id: options.id});
-            this.booking = new Booking();
+            this.booking = new Booking({CalendarId: options.id});
         },
         render: function() {
             var that = this;
@@ -35,16 +35,18 @@ define([
         confirmBooking: function(e) {
             e.preventDefault();
             var that = this;
-            this.booking.save($(e.target).serializeJSON(), {
-                success: function(model, response) {
-                    Backbone.history.navigate('#/calendars/' + that.calendar.get('id'), {
-                        trigger: true
-                    });
-                },
-                error: function(model, response) {
-                    // @TODO: display error
-                }
-            });
+            this.booking.set('endTime', parseInt(this.booking.get('startTime')) + parseInt($('#booking-length').val()));
+            console.log(this.booking.get('endTime'));
+            // this.booking.save($(e.target).serializeJSON(), {
+            //     success: function(model, response) {
+            //         Backbone.history.navigate('#/calendars/' + that.calendar.get('id'), {
+            //             trigger: true
+            //         });
+            //     },
+            //     error: function(model, response) {
+            //         // @TODO: display error
+            //     }
+            // });
         }
     });
 

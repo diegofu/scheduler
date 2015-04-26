@@ -39,7 +39,7 @@ define([
             'keyup #calendar-displaySlot': 'updateLength'
         },
         renderBooking: function(calendar) {
-            console.log(calendar);
+            // @TODO: Move all the logic in the template to a model
             $('#gridTemplate').html(_.template(GridTemplate, {
                 calendar: calendar,
                 moment: moment,
@@ -47,7 +47,7 @@ define([
                     return moment(availability.startTime, 'H:mm').unix();
                 }),
                 maxAvailability: _.max(calendar.get('Availabilities'), function(availability) {
-                    return moment(availability.end, 'H:mm').unix();
+                    return moment(availability.endTime, 'H:mm').unix();
                 })
             }));
         },
@@ -60,9 +60,6 @@ define([
                 success: function(model, response) {
                     that.renderBooking(model);
                     $('#save-calendar-form-button').removeAttr('disabled');
-                    Backbone.history.navigate('#', {
-                        trigger: true
-                    });
                 },
                 error: function(model, response) {
                     console.log(model);
