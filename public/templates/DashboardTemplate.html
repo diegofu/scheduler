@@ -6,9 +6,13 @@
         <div class="row">
             <div class="col-md-6">
                 <a href="#/calendars/<%= calendar.get('id') %>" class="btn btn-primary">
-                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                        Edit Calendar <%= calendar.get('name') %>
-                    </a>
+                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    Edit Calendar <%= calendar.get('name') %>
+                </a>
+                <a data-id="<%= calendar.get('id') %>" class="btn btn-danger remove-calendar">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    Delete Calendar <%= calendar.get('name') %>
+                </a>
             </div>
         </div>
     </div>

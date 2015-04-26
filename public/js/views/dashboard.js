@@ -9,6 +9,25 @@ define(['underscore', 'backbone', 'collections/calendars', 'text!templates/Dashb
             this.calendarColleciton.fetch().done(function() {
                 that.$el.html(_.template(DashboardTemplate, {calendars: that.calendarColleciton}));
             });
+        },
+        events: {
+            'click .remove-calendar': 'removeCalendar'
+        },
+        // @TODO: Add confirmation
+        removeCalendar: function(e) {
+            e.preventDefault();
+            this.calendarColleciton.get(e.target.dataset.id).destroy({
+                success: function(model, response) {
+                    // @TODO: Add some visual feedback
+                    $(e.target).closest('.well').remove();
+                },
+                error: function(model, response) {
+                    // @TODO: do something
+                    console.log(model);
+                    console.log(response);
+                },
+                wait: true
+            });
         }
     });
 

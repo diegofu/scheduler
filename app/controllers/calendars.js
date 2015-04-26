@@ -46,7 +46,12 @@ exports.update = function(req, res) {
 }
 
 exports.delete = function(req, res) {
-    res.status(400).send('err');
+    console.log(req.calendar);
+    req.calendar.destroy().then(function(calendar) {
+        res.json(calendar);
+    }).catch(function(err) {
+        res.status(500).json(err);
+    });
 }
 
 exports.calendarByID = function(req, res, next, id) {

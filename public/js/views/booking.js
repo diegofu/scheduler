@@ -34,9 +34,17 @@ define([
         },
         confirmBooking: function(e) {
             e.preventDefault();
-            console.log($(e.target).serializeJSON());
-            this.booking.set('id', null);
-            this.booking.save($(e.target).serializeJSON());
+            var that = this;
+            this.booking.save($(e.target).serializeJSON(), {
+                success: function(model, response) {
+                    Backbone.history.navigate('#/calendars/' + that.calendar.get('id'), {
+                        trigger: true
+                    });
+                },
+                error: function(model, response) {
+                    // @TODO: display error
+                }
+            });
         }
     });
 

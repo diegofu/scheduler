@@ -60,6 +60,9 @@ define([
                 success: function(model, response) {
                     that.renderBooking(model);
                     $('#save-calendar-form-button').removeAttr('disabled');
+                    Backbone.history.navigate('#', {
+                        trigger: true
+                    });
                 },
                 error: function(model, response) {
                     console.log(model);

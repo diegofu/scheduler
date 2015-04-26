@@ -3,7 +3,7 @@
     var internal = _.min([calendar.get('defaultLength'), calendar.get('minLength')]);
 	var startMoment = moment(minAvailability.startTime, 'H:mm');
 	var endMoment = moment(maxAvailability.endTime, 'H:mm');
-	print(calendar.slotBooked());
+
     for(var i = 0; i < 7; i++) {
     %>
         <div class="col-md-1 text-center">
