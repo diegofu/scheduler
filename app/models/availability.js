@@ -1,6 +1,8 @@
 "use strict";
 var crypto = require('crypto');
 
+
+// test
 module.exports = function(sequelize, DataTypes) {
     var Availability = sequelize.define("Availability", {
         dayOfWeek: {

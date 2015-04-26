@@ -39,6 +39,7 @@ define([
             'keyup #calendar-displaySlot': 'updateLength'
         },
         renderBooking: function(calendar) {
+            console.log(calendar);
             $('#gridTemplate').html(_.template(GridTemplate, {
                 calendar: calendar,
                 moment: moment,
@@ -53,18 +54,17 @@ define([
         saveCalendar: function(e) {
             e.preventDefault();
             $('#save-calendar-form-button').attr('disabled', 'disabled');
+
+            var that = this;
             this.calendar.save($(e.target).serializeJSON(), {
                 success: function(model, response) {
-                    // update the model to the returned model
-                    console.log(model);
-                    console.log(response);
+                    that.renderBooking(model);
                     $('#save-calendar-form-button').removeAttr('disabled');
                 },
                 error: function(model, response) {
                     console.log(model);
                     console.log(response);
-                },
-                // wait: true
+                }
             });
         },
         updateLength: _.debounce(function(e) {

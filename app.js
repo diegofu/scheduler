@@ -32,9 +32,9 @@ app.use(session({
     saveUninitialized: true,
     resave: true,
     store: new SessionStore({
-        user: config.username,
-        password: config.password,
-        database: config.database
+        user: config.db.username,
+        password: config.db.password,
+        database: config.db.database
     })
 }));
 

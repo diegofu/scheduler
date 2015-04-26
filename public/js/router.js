@@ -16,6 +16,7 @@ define([
             this.route(route, name, function() {
                 var args = arguments;
 
+                document.title = name;
                 require([path], function(module) {
                     var options = null;
                     var parameters = route.match(/[:\*]\w+/g);
@@ -30,6 +31,7 @@ define([
 
                     var page = Vm.create(self.navbar, name, module, options);
                     page.render();
+
                 });
             });
         }
