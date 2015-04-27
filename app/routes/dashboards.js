@@ -6,6 +6,7 @@ var models = require('../models'),
 
 var gcal = require('google-calendar');
 
+
 // Everything in here should be secured
 module.exports = function(app) {
     var dashboard = require('../controllers/dashboards');
@@ -30,7 +31,7 @@ module.exports = function(app) {
     app.param('calendarId', calendars.calendarByID);
 
     app.route('/bookings')
-        .get(bookings.create)
+        .get(users.requiresLogin, bookings.list)
         .post(bookings.create);
 
     app.route('/bookings/:bookingId')
@@ -46,20 +47,15 @@ module.exports = function(app) {
             'https://www.googleapis.com/auth/calendar'
         ]
     }));
-    // app.route('/auth/google/callback').get(function(strategy) {
-    //     passport.authenticate('google', { failureRedirect: '/login' }),
-    //         function(req, res) {
-    //             console.log(req);
-    //         });
-    // });
 
-app.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  function(req, res) {
-    req.session.access_token = req.user.accessToken;
-    // console.log(req);
-    res.redirect('/');
-  });
+    app.get('/auth/google/callback', 
+        passport.authenticate('google', { failureRedirect: '/login' }),
+        function(req, res) {
+            req.session.access_token = req.user.accessToken;
+            // console.log(req);
+            res.redirect('/');
+        }
+    );
 
     passport.use(new GoogleStrategy({
             clientID: '188872170464-q44fr43ptithd868f76g0d3jkbq0r7up.apps.googleusercontent.com',
@@ -68,7 +64,7 @@ app.get('/auth/google/callback',
         },
         function(accessToken, refreshToken, params, profile, done) {
             process.nextTick(function() {
-                console.log(params);
+                console.log(profile._json);
                 profile.accessToken = accessToken;
                 return done(null, profile);
             })
@@ -76,6 +72,16 @@ app.get('/auth/google/callback',
     ));
 
     app.get('/gcalendars/list', function(req, res) {
+        if(!req.session.access_token) {
+            return res.redirect('/auth/google');
+        }
+        var google_calendar = new gcal.GoogleCalendar(req.session.access_token);
+        google_calendar.calendarList.list({
+            minAccessRole: 'writer'
+        },function(err, calendarList) {
+            console.log(err);
+            console.log(calendarList);
+        })
         console.log(req.session.access_token);
     })
 };

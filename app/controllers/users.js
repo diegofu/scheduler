@@ -29,7 +29,7 @@ exports.signin = function(req, res) {
 }
 
 exports.signup = function(req, res) {
-    models.User.create(req.body).success(function(user) {
+    models.User.create(req.body).then(function(user) {
         req.login(user, function(err) {
             if (err) {
                 res.status(400).send(err);
@@ -37,7 +37,7 @@ exports.signup = function(req, res) {
                 res.json(user);
             }
         });
-    }).error(function(err) {
+    }).catch(function(err) {
         res.status(400).send(err);
     });
 }

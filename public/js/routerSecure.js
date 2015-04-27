@@ -41,6 +41,7 @@ define([
         router.register('calendar/create', 'CalendarView', 'views/calendar');
         router.register('calendars/:id', 'CalendarView', 'views/calendar');
         router.register('calendars/:id/:timestamp', 'BookingView', 'views/booking');
+        router.register('bookings/list', 'BookingList', 'views/bookingList');
         router.register('', 'Dashboard', 'views/dashboard');
 
         Backbone.history.start();

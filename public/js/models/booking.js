@@ -6,22 +6,25 @@ define(['jquery', 'underscore', 'backbone', 'models/Calendar'], function($, _, B
         		id: options.CalendarId
         	});
 
-        	var that = this;
-        	this.calendar.fetch().done(function() {
-        		that.set({
-        			lengthDropdown: [
-        				that.calendar.get('defaultLength')
-        			]
-        		});
+        },
+        prepareDropdown: function(calendar, timestamp) {
+            this.set({
+                lengthDropdown: [
+                    calendar.get('defaultLength')
+                ]
+            });
 
-        		if(that.calendar.get('minLength') != that.calendar.get('defaultLength')) {
-        			that.get('lengthDropdown').push(that.calendar.get('minLength'));
-        		}
+            if(calendar.get('minLength') != calendar.get('defaultLength')) {
+                this.get('lengthDropdown').push(calendar.get('minLength'));
+            }
 
-        		if(that.calendar.get('maxLength') != that.calendar.get('defaultLength')) {
-        			that.get('lengthDropdown').push(that.calendar.get('maxLength'));
-        		}
-        	});
+            if(calendar.get('maxLength') != calendar.get('defaultLength')) {
+                this.get('lengthDropdown').push(calendar.get('maxLength'));
+            }
+            this.set({
+                'startTime': timestamp,
+            });
+
         }
     });
 

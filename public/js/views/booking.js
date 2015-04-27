@@ -18,10 +18,8 @@ define([
             var that = this;
 
             this.calendar.fetch().done(function() {
-                that.booking.set({
-                    'startTime': that.options.timestamp,
-                    'endTime': moment.unix(that.options.timestamp).add(that.calendar.get('defaultLength'), 'minutes').unix()
-                });
+                that.booking.prepareDropdown(that.calendar, that.options.timestamp);
+                
                 that.$el.html(_.template(BookingTemplate, {
                     booking: that.booking,
                     time: moment.unix(that.options.timestamp).format(),
@@ -36,17 +34,17 @@ define([
             e.preventDefault();
             var that = this;
             this.booking.set('endTime', parseInt(this.booking.get('startTime')) + parseInt($('#booking-length').val()));
-            console.log(this.booking.get('endTime'));
-            // this.booking.save($(e.target).serializeJSON(), {
-            //     success: function(model, response) {
-            //         Backbone.history.navigate('#/calendars/' + that.calendar.get('id'), {
-            //             trigger: true
-            //         });
-            //     },
-            //     error: function(model, response) {
-            //         // @TODO: display error
-            //     }
-            // });
+
+            this.booking.save($(e.target).serializeJSON(), {
+                success: function(model, response) {
+                    Backbone.history.navigate('#/calendars/' + that.calendar.get('id'), {
+                        trigger: true
+                    });
+                },
+                error: function(model, response) {
+                    // @TODO: display error
+                }
+            });
         }
     });
 
