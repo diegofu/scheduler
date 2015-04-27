@@ -73,7 +73,6 @@ define([
                 return;
             }
 
-
             var displaySlot = parseInt(e.target.value);
             var slots = this.calculateSlots(displaySlot);
 

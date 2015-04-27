@@ -20,6 +20,7 @@ exports.list = function(req, res) {
     })
 }
 
+// @TODO: I dont know wtf I am doing here
 exports.update = function(req, res) {
     return models.sequelize.transaction(function(t) {
         return models.Calendar.update(req.body, {
@@ -39,14 +40,22 @@ exports.update = function(req, res) {
             })
         });
     }).then(function(result) {
-        return res.json(result);
+        return models.Calendar.find({
+            where: {
+                id: req.body.id
+            },
+            include: [models.Availability, models.Booking]
+        }).then(function(calendar) {
+            return res.json(calendar);
+        }).catch(function(err) {
+            return res.status(500).json(err);
+        });
     }).catch(function(err) {
         return res.status(500).json(err);
     });
 }
 
 exports.delete = function(req, res) {
-    console.log(req.calendar);
     req.calendar.destroy().then(function(calendar) {
         res.json(calendar);
     }).catch(function(err) {
