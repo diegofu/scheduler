@@ -67,26 +67,29 @@ exports.logout = function(req, res) {
     res.redirect('/');
 };
 
-exports.saveOAuthUserProfile = function(req, user, done) {
-    if(!req.user) {
-        models.OauthProvider.findOne({
-            where: {
-                provider: user.oauthProvider.provider,
-                providerUniqueId: user.oauthProvider.providerUniqueId
-            },
-            include: [
-                models.User
-            ]
-        }).then(function(oauthProvider) {
-            if(oauthProvider) {
-                return done(null, user);
+exports.saveOAuthUserProfile = function(req, userProfile, done) {
+    if (!req.user) {
+        models.User.findAll({
+            include: [{
+                model: models.Calendar,
+                where: {
+                    provider: userProfile.oauthProvider.provider,
+                    providerUniqueId: userProfile.oauthProvider.providerUniqueId
+                }
+            }]
+        }).then(function(user) {
+            console.log(user);
+            if (user) {
+                return done(null, user)
             } else {
                 return models.sequelize.transaction(function(t) {
                     return models.User.create(user, {
                         transaction: t
                     }).then(function(_user) {
                         user.oauthProvider.UserId = _user.getDataValue('id');
-                        return models.OauthProvider.create(user.oauthProvider, {transaction: t});
+                        return models.OauthProvider.create(user.oauthProvider, {
+                            transaction: t
+                        });
                     });
                 }).then(function(result) {
                     return done(null, result);
@@ -95,6 +98,7 @@ exports.saveOAuthUserProfile = function(req, user, done) {
                 });
             }
         });
+
     } else {
         console.log('no user');
     }

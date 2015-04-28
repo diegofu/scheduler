@@ -11,16 +11,16 @@ exports.create = function(req, res) {
 }
 
 exports.list = function(req, res) {
-	models.Booking.findAll({
-		include: [{
-			model: models.Calendar,
-			where: {
-				UserId: req.user.id
-			}
-		}]
-	}).then(function(bookings) {
-		res.json(bookings);
-	}).catch(function(err) {
-		res.status(500).json(err);
-	});
+    models.Booking.findAll({
+        include: [{
+            model: models.Calendar,
+            where: {
+                UserId: req.user.id
+            }
+        }]
+    }).then(function(bookings) {
+        res.json(bookings);
+    }).catch(function(err) {
+        res.status(500).json(err);
+    });
 }
