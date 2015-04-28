@@ -5,7 +5,7 @@
         <input type="hidden" name="startTime" value="<%= booking.get('startTime') %>">
     	<%= time %>
 
-        <input class="form-control" type="email" id="signup-password-input" name="email" required value="test@test.com">
+        <input class="form-control" type="email" id="signup-password-input" name="email" required>
         <textarea name="notes" class="form-control"></textarea>
         <span class="help-block"></span>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Confirm</button>
@@ -13,7 +13,7 @@
         <select id="booking-length" class="form-control">
             <% _.each(booking.get('lengthDropdown'), function(length) { %>
                 <option value="<%= length %>">
-                    <%= length %> minutes 
+                    <%= length %> minutes
                 </option>
             <% }) %>
         </select>

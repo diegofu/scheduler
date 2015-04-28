@@ -3,6 +3,7 @@
 var models = require('../models');
 
 exports.create = function(req, res) {
+    res.json(req.user);
     return models.Calendar.createCalendar(req.body, req.user).then(function(result) {
         return res.json(result);
     }).catch(function(err) {

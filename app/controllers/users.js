@@ -29,6 +29,7 @@ exports.signin = function(req, res) {
 }
 
 exports.signup = function(req, res) {
+    req.body.provider = 'local';
     models.User.create(req.body).then(function(user) {
         req.login(user, function(err) {
             if (err) {
@@ -38,6 +39,7 @@ exports.signup = function(req, res) {
             }
         });
     }).catch(function(err) {
+        console.log(err);
         res.status(400).send(err);
     });
 }
@@ -64,3 +66,36 @@ exports.logout = function(req, res) {
     req.logout();
     res.redirect('/');
 };
+
+exports.saveOAuthUserProfile = function(req, user, done) {
+    if(!req.user) {
+        models.OauthProvider.findOne({
+            where: {
+                provider: user.oauthProvider.provider,
+                providerUniqueId: user.oauthProvider.providerUniqueId
+            },
+            include: [
+                models.User
+            ]
+        }).then(function(oauthProvider) {
+            if(oauthProvider) {
+                return done(null, user);
+            } else {
+                return models.sequelize.transaction(function(t) {
+                    return models.User.create(user, {
+                        transaction: t
+                    }).then(function(_user) {
+                        user.oauthProvider.UserId = _user.getDataValue('id');
+                        return models.OauthProvider.create(user.oauthProvider, {transaction: t});
+                    });
+                }).then(function(result) {
+                    return done(null, result);
+                }).catch(function(err) {
+                    return done(err, null);
+                });
+            }
+        });
+    } else {
+        console.log('no user');
+    }
+}

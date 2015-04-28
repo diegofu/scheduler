@@ -3,31 +3,6 @@ var crypto = require('crypto');
 
 module.exports = function(sequelize, DataTypes) {
     var User = sequelize.define("User", {
-        username: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
-            validate: {
-                isUnique: function(value, next) {
-                    var self = this;
-                    User.find({
-                            where: {
-                                username: value
-                            }
-                        })
-                        .then(function(user) {
-                            // reject if a different user wants to use the same email
-                            if (user && self.id !== user.id) {
-                                return next('Username already in use!');
-                            }
-                            return next();
-                        })
-                        .catch(function(err) {
-                            return next(err);
-                        });
-                }
-            }
-        },
         email: {
             type: DataTypes.STRING,
             validate: {
@@ -63,12 +38,12 @@ module.exports = function(sequelize, DataTypes) {
         },
         password: {
             type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                len: [6, 255]
-            }
         },
-        salt: DataTypes.STRING
+        salt: DataTypes.STRING,
+        provider: {
+            type: DataTypes.STRING,
+            allowNull: false
+        }
     }, {
         instanceMethods: {
             authenticate: function(password) {
@@ -82,11 +57,24 @@ module.exports = function(sequelize, DataTypes) {
             }
         }
     }, {
-    	classMethods: {
-    		associate: function(models) {
-    			User.hasMany(models.Calendar)
-    		}
-    	}
+        validate: {
+            localPasswordValidate: function() {
+                return this.provider !== 'local' || (this.password && this.password.length > 5);
+            },
+            localUsernameValidate: function() {
+                if(this.provider !== 'local') {
+                    return true;
+                }
+
+            }
+        }
+    }, {
+        classMethods: {
+            associate: function(models) {
+                User.hasMany(models.Calendar),
+                User.hasMany(models.OauthProvider)
+            }
+        }
     });
 
     User.hook('beforeCreate', function(user, options, fn) {
