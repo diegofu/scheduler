@@ -75,10 +75,9 @@ module.exports = function(app) {
                 req.login(user, function(err) {
                     if(err) {
                         console.log(err);
-                        return res.redirect('/#!/signin');
+                        return res.redirect('/#!/wooot');
                     }
-
-                    return res.redirect(redirectURL || '/dashboard');
+                    return res.redirect('/dashboard');
                 })
             }) (req, res, next);
         }
@@ -91,6 +90,7 @@ module.exports = function(app) {
             passReqToCallback: true
         },
         function(req, accessToken, refreshToken, params, profile, done) {
+            console.log(profile);
             var user = {
                 firstname: profile.name.givenName,
                 lastname: profile.name.familyName,

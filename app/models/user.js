@@ -68,22 +68,19 @@ module.exports = function(sequelize, DataTypes) {
 
             }
         }
-    }, {
-        classMethods: {
-            associate: function(models) {
-                User.hasMany(models.Calendar),
-                User.hasMany(models.OauthProvider)
-            }
-        }
     });
 
     User.hook('beforeCreate', function(user, options, fn) {
+        console.log(user);
         if (user.password && user.password.length > 5) {
             user.salt = crypto.randomBytes(16).toString('base64');
             user.password = user.hashPassword(user.password);
         }
         fn(null, user);
     });
+
+    User.hasMany(sequelize.models.Calendar);
+    User.hasMany(sequelize.models.OauthProvider);
 
     return User;
 };

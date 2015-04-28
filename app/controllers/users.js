@@ -69,25 +69,24 @@ exports.logout = function(req, res) {
 
 exports.saveOAuthUserProfile = function(req, userProfile, done) {
     if (!req.user) {
-        models.User.findAll({
+        models.User.find({
             include: [{
-                model: models.Calendar,
+                model: models.OauthProvider,
                 where: {
-                    provider: userProfile.oauthProvider.provider,
-                    providerUniqueId: userProfile.oauthProvider.providerUniqueId
+                    providerUniqueId: userProfile.oauthProvider.providerUniqueId,
+                    provider: userProfile.oauthProvider.provider
                 }
             }]
         }).then(function(user) {
-            console.log(user);
             if (user) {
                 return done(null, user)
             } else {
                 return models.sequelize.transaction(function(t) {
-                    return models.User.create(user, {
+                    return models.User.create(userProfile, {
                         transaction: t
-                    }).then(function(_user) {
-                        user.oauthProvider.UserId = _user.getDataValue('id');
-                        return models.OauthProvider.create(user.oauthProvider, {
+                    }).then(function(user) {
+                        userProfile.oauthProvider.UserId = user.getDataValue('id');
+                        return models.OauthProvider.create(userProfile.oauthProvider, {
                             transaction: t
                         });
                     });
