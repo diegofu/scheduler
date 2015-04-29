@@ -35,8 +35,8 @@ module.exports = function(sequelize, DataTypes) {
         }
     }, {
         classMethods: {
-            associate: function() {
-                OauthProvider.belongsTo(sequelize.models.User, {
+            associate: function(models) {
+                OauthProvider.belongsTo(models.User, {
                     foreignKey: {
                         allowNull: false,
                     },

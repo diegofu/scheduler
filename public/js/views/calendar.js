@@ -2,12 +2,14 @@ define([
     'underscore',
     'backbone',
     'models/calendar',
+    'collections/googleCalendars',
     'text!templates/CalendarTemplate.html',
     'text!templates/GridTemplate.html',
+    'text!templates/ExternalCalendarTemplate.html',
     'moment',
     'serializejson',
     'datetimepicker'
-], function(_, Backbone, Calendar, CalendarTemplate, GridTemplate, moment) {
+], function(_, Backbone, Calendar, GoogleCalendarCollection, CalendarTemplate, GridTemplate, ExternalCalendarTemplate, moment) {
     var CalendarView = Backbone.View.extend({
         el: $('#content'),
         initialize: function(options) {
@@ -30,6 +32,16 @@ define([
                 });
 
                 that.renderBooking(that.calendar);
+
+                var googleCalendarCollection = new GoogleCalendarCollection();
+
+                googleCalendarCollection.fetch().done(function() {
+                    var exterTemp = _.template(ExternalCalendarTemplate, {
+                        externalCalendars: googleCalendarCollection,
+                        calendar: that.calendar
+                    });
+                    $('#external-calendars').html(exterTemp);
+                });
             });
 
             return this;

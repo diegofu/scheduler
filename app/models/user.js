@@ -55,14 +55,19 @@ module.exports = function(sequelize, DataTypes) {
                 }
                 return password;
             }
-        }
-    }, {
+        },
+        classMethods: {
+            associate: function(models) {
+                User.hasMany(models.Calendar);
+                User.hasMany(models.OauthProvider);
+            },
+        },
         validate: {
             localPasswordValidate: function() {
                 return this.provider !== 'local' || (this.password && this.password.length > 5);
             },
             localUsernameValidate: function() {
-                if(this.provider !== 'local') {
+                if (this.provider !== 'local') {
                     return true;
                 }
 
@@ -71,16 +76,12 @@ module.exports = function(sequelize, DataTypes) {
     });
 
     User.hook('beforeCreate', function(user, options, fn) {
-        console.log(user);
         if (user.password && user.password.length > 5) {
             user.salt = crypto.randomBytes(16).toString('base64');
             user.password = user.hashPassword(user.password);
         }
         fn(null, user);
     });
-
-    User.hasMany(sequelize.models.Calendar);
-    User.hasMany(sequelize.models.OauthProvider);
 
     return User;
 };
