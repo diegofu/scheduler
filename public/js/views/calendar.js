@@ -48,7 +48,13 @@ define([
         },
         events: {
             'submit form#save-calendar-form': 'saveCalendar',
-            'keyup #calendar-displaySlot': 'updateLength'
+            'keyup #calendar-displaySlot': 'updateLength',
+            'click .calendar-control': 'updateView'
+        },
+        updateView: function(e) {
+            e.preventDefault();
+
+            console.log(e.target.dataset.href);
         },
         renderBooking: function(calendar) {
             // @TODO: Move all the logic in the template to a model
