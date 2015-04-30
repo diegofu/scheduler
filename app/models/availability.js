@@ -5,14 +5,6 @@ var crypto = require('crypto');
 // test
 module.exports = function(sequelize, DataTypes) {
     var Availability = sequelize.define("Availability", {
-        dayOfWeek: {
-            type: DataTypes.INTEGER,
-            validate: {
-                min: 1,
-                max: 7
-            },
-            allowNull: false
-        },
         startTime: {
             type: DataTypes.STRING,
             validate: {
@@ -40,7 +32,7 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         classMethods: {
             associate: function() {
-                Availability.belongsTo(sequelize.models.Calendar, {
+                Availability.belongsTo(sequelize.models.DayOfWeek, {
                     foreignKey: {
                         allowNull: false,
                     },

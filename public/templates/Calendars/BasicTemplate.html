@@ -1,63 +1,62 @@
+<form id="save-calendar-form" class="col-md-12">
+    <% if(calendar.has('name')) { %>
+        <h2><%= calendar.get('name') %></h2>
+    <% } else { %>
+        <h2>Create a new calendar</h2>
+    <% } %>
+    <fieldset>
+        <input class="form-control" type="text" id="calendar-name" name="name" placeholder="Calendar Name" value="<%= calendar.get('name') %>" required>
+        <span class="help-block"></span>
+        <textarea class="input-medium form-control" id="calendar-note" name="notes"><%= calendar.get('notes') %></textarea>
+        <span class="help-block"></span>
 
-        <form id="save-calendar-form" class="col-md-12">
-            <% if(calendar.has('name')) { %>
-                <h2><%= calendar.get('name') %></h2>
+        <div class="row form-group">
+            <div class="col-sm-4">Display</div>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" id="calendar-displaySlot" value="<%= minLength %>" required>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-4">Default Length</div>
+            <div class="col-sm-8">
+                <select class="form-control" id="calendar-defaultLength" name="defaultLength" required>
+                    <% _.each(slots, function(slot) { %>
+                        <option <%= slot == calendar.get('defaultLength') ? 'selected' : '' %>><%= slot %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-4">Minimum Length</div>
+            <div class="col-sm-8">
+                <select class="form-control" id="calendar-minLength" name="minLength" required>
+                    <% _.each(slots, function(slot) { %>
+                        <option <%= slot == calendar.get('minLength') ? 'selected' : '' %>><%= slot %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-4">Maximum Length</div>
+            <div class="col-sm-8">
+                <select class="form-control" id="calendar-maxLength" name="maxLength" required>
+                    <% _.each(slots, function(slot) { %>
+                        <option <%= slot == calendar.get('maxLength') ? 'selected': '' %>><%= slot %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-4">Calendar to add</div>
+            <div class="col-sm-8" id="external-calendars">
+            </div>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" id="save-calendar-form-button">
+            <% if(calendar.has('id')) { %>
+                Update
             <% } else { %>
-                <h2>Create a new calendar</h2>
+                Create
             <% } %>
-            <fieldset>
-                <input class="form-control" type="text" id="calendar-name" name="name" placeholder="Calendar Name" value="<%= calendar.get('name') %>" required>
-                <span class="help-block"></span>
-                <textarea class="input-medium form-control" id="calendar-note" name="notes"><%= calendar.get('notes') %></textarea>
-                <span class="help-block"></span>
-
-                <div class="row form-group">
-                    <div class="col-sm-4">Display</div>
-                    <div class="col-sm-8">
-                        <input class="form-control" type="text" id="calendar-displaySlot" value="<%= minLength %>" required>
-                    </div>
-                </div>
-                <div class="row form-group">
-                    <div class="col-sm-4">Default Length</div>
-                    <div class="col-sm-8">
-                        <select class="form-control" id="calendar-defaultLength" name="defaultLength" required>
-                            <% _.each(slots, function(slot) { %>
-                                <option <%= slot == calendar.get('defaultLength') ? 'selected' : '' %>><%= slot %></option>
-                            <% }) %>
-                        </select>
-                    </div>
-                </div>
-                <div class="row form-group">
-                    <div class="col-sm-4">Minimum Length</div>
-                    <div class="col-sm-8">
-                        <select class="form-control" id="calendar-minLength" name="minLength" required>
-                            <% _.each(slots, function(slot) { %>
-                                <option <%= slot == calendar.get('minLength') ? 'selected' : '' %>><%= slot %></option>
-                            <% }) %>
-                        </select>
-                    </div>
-                </div>
-                <div class="row form-group">
-                    <div class="col-sm-4">Maximum Length</div>
-                    <div class="col-sm-8">
-                        <select class="form-control" id="calendar-maxLength" name="maxLength" required>
-                            <% _.each(slots, function(slot) { %>
-                                <option <%= slot == calendar.get('maxLength') ? 'selected': '' %>><%= slot %></option>
-                            <% }) %>
-                        </select>
-                    </div>
-                </div>
-                <div class="row form-group">
-                    <div class="col-sm-4">Calendar to add</div>
-                    <div class="col-sm-8" id="external-calendars">
-                    </div>
-                </div>
-                <button class="btn btn-lg btn-primary btn-block" type="submit" id="save-calendar-form-button">
-                    <% if(calendar.has('id')) { %>
-                        Update
-                    <% } else { %>
-                        Create
-                    <% } %>
-                </button>
-            </fieldset>
-        </form>
+        </button>
+    </fieldset>
+</form>

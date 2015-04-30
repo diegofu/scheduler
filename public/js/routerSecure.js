@@ -36,7 +36,8 @@ define([
         },
         routes: {
             'calendars/:id(/:tab)': 'editCalendar',
-            'calendars/:id': 'editCalendar'
+            'calendars/:id': 'editCalendar',
+            'calendar/create': 'createCalendar'
         }
     });
 
@@ -55,6 +56,13 @@ define([
             require(['views/editCalendar'], function(EditCalendarView) {
                 var editCalendar = new EditCalendarView({id: id, tab: tab});
                 editCalendar.render();
+            })
+        })
+
+        router.on('route:createCalendar', function() {
+            require(['views/calendar'], function(CalendarView) {
+                var calendarView = new CalendarView();
+                calendarView.render();
             })
         })
 

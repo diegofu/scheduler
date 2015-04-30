@@ -9,3 +9,12 @@
         </label>
     </div>
 <% } %>
+
+
+<% externalCalendars.each(function(calendar) { %>
+    <div class="checkbox">
+        <label for="<%= calendar.get('id') %>">
+            <input type="checkbox" value="ExternalCalendars[][<%= calendar.get('id') %>]" id="<%= calendar.get('id') %>"><%= calendar.get('summary') %>
+        </label>
+    </div>
+<% }) %>

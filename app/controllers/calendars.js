@@ -85,6 +85,16 @@ exports.read = function(req, res) {
     res.json(req.calendar);
 }
 
+exports.availabilities = function(req, res) {
+    models.Availability.findAll({
+        where: {
+            CalendarId: req.calendar.id
+        }
+    }).then(function(availabilities) {
+        res.json(availabilities);
+    })
+}
+
 exports.hasAuthorization = function(req, res, next) {
     if (req.calendar.UserId !== req.user.id) {
         return res.status(403).send({

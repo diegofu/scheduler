@@ -1,31 +1,19 @@
-define(['underscore', 'backbone', 'moment', 'models/Calendar', 'text!templates/Calendars/TimesTemplate.html'], function(_, Backbone, Moment, Calendar, TimesTemplate) {
+define(['underscore', 'backbone', 'moment', 'collections/availabilities', 'text!templates/Calendars/TimesTemplate.html'], function(_, Backbone, moment, AvailabilityCollection, TimesTemplate) {
     var CalendarBasic = Backbone.View.extend({
         el: $('#tab-content'),
         initialize: function(options) {
-            this.calendar = new Calendar({id: options.id});
+            this.availabilities = new AvailabilityCollection(options);
         },
         render: function() {
             var that = this;
-            this.calendar.fetch().done(function() {
-                console.log(that.calendar);
-                var minLength = _.min([that.calendar.get('defaultLength'), that.calendar.get('minLength'), that.calendar.get('maxLength')]);
-                var slots = that.calculateSlots(minLength);
+            this.availabilities.fetch().done(function() {
                 that.$el.html(_.template(TimesTemplate, {
-                    calendar: that.calendar,
-                    moment: Moment,
-                    minLength: minLength,
-                    slots: slots
+                    availabilities: that.availabilities,
+                    moment: moment
                 }));
             });
 
             return this;
-        },
-        calculateSlots: function(length) {
-            var slots = [];
-            for (var i = length; i <= 1440; i += length) {
-                slots.push(i);
-            }
-            return slots;
         }
     });
 
