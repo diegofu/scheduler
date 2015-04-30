@@ -33,16 +33,30 @@ define([
                     page.render();
                 });
             });
+        },
+        routes: {
+            'calendars/:id(/:tab)': 'editCalendar',
+            'calendars/:id': 'editCalendar'
         }
     });
 
     var initialize = function(options) {
-        var router = new AppRouter(options)
-        router.register('calendar/create', 'CalendarView', 'views/calendar');
-        router.register('calendars/:id', 'CalendarView', 'views/calendar');
-        router.register('calendars/:id/:timestamp', 'BookingView', 'views/booking');
-        router.register('bookings/list', 'BookingList', 'views/bookingList');
-        router.register('', 'Dashboard', 'views/dashboard');
+        var router = new AppRouter(options);
+        // router.register('calendar/create', 'CalendarView', 'views/calendar');
+        // router.register('calendars/:id', 'CalendarView', 'views/calendar');
+        // // router.register('calendars/:id/:timestamp', 'BookingView', 'views/booking');
+        // router.register('bookings/list', 'BookingList', 'views/bookingList');
+        // router.register('', 'Dashboard', 'views/dashboard');
+
+        router.on('route:editCalendar', function(id, tab) {
+            if(tab == undefined) {
+                tab = 'basic';
+            }
+            require(['views/editCalendar'], function(EditCalendarView) {
+                var editCalendar = new EditCalendarView({id: id, tab: tab});
+                editCalendar.render();
+            })
+        })
 
         Backbone.history.start();
     };

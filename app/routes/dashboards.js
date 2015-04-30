@@ -25,6 +25,12 @@ module.exports = function(app) {
 
     app.param('calendarId', calendars.calendarByID);
 
+    app.route('/calendars/:calendarId/availabilities')
+        .get(users.redirectLogin, calendars.hasAuthorization, function(req, res, next) {
+            req.calendar.id = req.params.calendarId;
+            res.json(req.calendar);
+        })
+
     app.route('/bookings')
         .get(users.requiresLogin, bookings.list)
         .post(bookings.create);

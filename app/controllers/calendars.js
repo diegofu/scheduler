@@ -68,8 +68,7 @@ exports.calendarByID = function(req, res, next, id) {
     models.Calendar.find({
         where: {
             id: id
-        },
-        include: [models.Availability, models.Booking]
+        }
     }).then(function(calendar) {
         if (!calendar) {
             return res.status(404).send({
