@@ -25,8 +25,8 @@ module.exports = function(app) {
 
     app.param('calendarId', calendars.calendarByID);
 
-    app.route('/calendars/:calendarId/availabilities/:day')
-        .get(users.redirectLogin, calendars.hasAuthorization, calendars.availabilitiesByDay)
+    app.route('/calendars/:calendarId/availabilities')
+        .get(users.redirectLogin, calendars.hasAuthorization, calendars.availabilities)
 
     app.route('/bookings')
         .get(users.requiresLogin, bookings.list)

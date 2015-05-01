@@ -17,7 +17,7 @@
                     <input type="hidden" class="input-medium form-control" name="DayOfWeek[<%= index %>][Availabilities][][id]" value="<%= availability.id %>">
                     <div class="row">
                         <div class="col-sm-2">
-                            <%= moment().isoWeekday(availability.dayOfWeek).format('dddd') %>
+                            <%= moment().day(availability.dayOfWeek).format('dddd') %>
                         </div>
                         <div class="col-sm-5">
                             <div class="form-group">

@@ -1,20 +1,12 @@
 <div class="col-md-12">
 <h3>Set when you are available</h3>
-<table class="table">
-    <thead>
-    <tr>
-        <% for(var i = 0; i < 7; i++) { %>
-            <th>
-                <%= moment().day(i).format('dddd') %>
-            </th>
-        <% } %>
-    </tr>
-    </thead>
-    <tbody>
-        <% for(var i = 0; i < 7; i++) { %>
-            <tr id="availability-<%= i %>">
-            </tr>
-        <% } %>
-    </tbody>
-</table>
+
+<% availabilities.each(function(availability) { %>
+    <div class="row">
+        <div class="col-md-3">
+            <%= moment().day(availability.get('dayOfWeek')).format('dddd') %>
+        </div>
+        <div id="availability-<%= availability.cid %>" class="col-md-9"></div>
+    </div>
+<% }) %>
 </div>

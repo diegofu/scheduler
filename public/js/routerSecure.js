@@ -47,7 +47,7 @@ define([
         // router.register('calendars/:id', 'CalendarView', 'views/calendar');
         // // router.register('calendars/:id/:timestamp', 'BookingView', 'views/booking');
         // router.register('bookings/list', 'BookingList', 'views/bookingList');
-        // router.register('', 'Dashboard', 'views/dashboard');
+        router.register('', 'Dashboard', 'views/dashboard');
 
         router.on('route:editCalendar', function(id, tab) {
             if(tab == undefined) {

@@ -1,12 +1,11 @@
-define(['underscore', 'backbone', 'models/availability'], function(_, Backbone, Availability) {
+define(['underscore', 'backbone'], function(_, Backbone) {
     var Availabilities = Backbone.Collection.extend({
         initialize: function(options) {
             this.options = options;
         },
         url: function() {
-            return '/calendars/' + this.options.id + '/availabilities/' + this.options.day;
+            return '/calendars/' + this.options.id + '/availabilities';
         },
-        model: Availability
     });
 
     return Availabilities;

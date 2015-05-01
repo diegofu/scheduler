@@ -3,6 +3,10 @@ define(['underscore', 'backbone', 'moment'], function(_, Backbone, moment) {
         urlRoot: '/calendars',
         defaults: {
             Availabilities: [{
+                dayOfWeek: 0,
+                startTime: "0900",
+                endTime: "1800",
+            }, {
                 dayOfWeek: 1,
                 startTime: "0900",
                 endTime: "1800",
@@ -24,10 +28,6 @@ define(['underscore', 'backbone', 'moment'], function(_, Backbone, moment) {
                 endTime: "1800",
             }, {
                 dayOfWeek: 6,
-                startTime: "0900",
-                endTime: "1800",
-            }, {
-                dayOfWeek: 7,
                 startTime: "0900",
                 endTime: "1800",
             }],

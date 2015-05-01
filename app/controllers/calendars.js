@@ -84,15 +84,14 @@ exports.read = function(req, res) {
     res.json(req.calendar);
 }
 
-exports.availabilitiesByDay = function(req, res) {
-    models.DayOfWeek.findOne({
+exports.availabilities = function(req, res) {
+    models.DayOfWeek.findAll({
         include: models.Availability,
         where: {
-            CalendarId: req.calendar.id,
-            dayOfWeek: req.params.day
+            CalendarId: req.calendar.id
         }
     }).then(function(day) {
-        res.json(day.Availabilities);
+        res.json(day);
     }).catch(function(err) {
         res.status(404).json(err);
     })

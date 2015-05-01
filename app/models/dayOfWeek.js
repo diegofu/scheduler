@@ -6,8 +6,8 @@ module.exports = function(sequelize, DataTypes) {
         dayOfWeek: {
             type: DataTypes.INTEGER,
             validate: {
-                min: 1,
-                max: 7
+                min: 0,
+                max: 6
             },
             allowNull: false
         }

@@ -2,41 +2,49 @@ define([
     'underscore',
     'backbone',
     'moment',
+    'models/availableSlot',
     'collections/availabilities',
     'views/calendar/availableSlot',
     'text!templates/Calendars/TimesTemplate.html'
-], function(_, Backbone, moment, AvailabilityCollection, AvailableSlotView, TimesTemplate) {
+], function(_, Backbone, moment, AvailableSlot, AvailabilityCollection, AvailableSlotView, TimesTemplate) {
     var CalendarTimes = Backbone.View.extend({
         el: $('#tab-content'),
         initialize: function(options) {
+            var that = this;
             this.options = options;
 
-            this.availabilities = [];
-            for(var i = 1; i <= 7; i++) {
-                availability = new AvailabilityCollection(_.extend(this.options, {day: i}));
-                this.listenTo(availability, 'add', this.addOne);
-                this.listenTo(availability, 'reset', this.addAll);
+            this.availabilities = new AvailabilityCollection(this.options);
+            this.listenTo(this.availabilities, 'add', this.addOne);
+            this.listenTo(this.availabilities, 'reset', this.addAll);
 
-                availability.fetch({reset: true});
-
-                this.availabilities.push(availability);
-            }
 
         },
         render: function() {
             var that = this;
-            this.$el.html(_.template(TimesTemplate, {
-                availabilities: this.availabilities,
-                moment: moment
-            }));
+            this.availabilities.fetch({
+                reset: true,
+                silent: true
+            }).done(function() {
+                that.$el.html(_.template(TimesTemplate, {
+                    availabilities: that.availabilities,
+                    moment: moment
+                }));
 
-            return this;
+                that.availabilities.trigger('reset');
+            })
+
         },
-        addOne: function(availableSlot) {
-            var view = new AvailableSlotView({model: availability});
+        addOne: function(availability) {
+            _.each(availability.get('Availabilities'), function(slot) {
+                var view = new AvailableSlotView({
+                    model: new AvailableSlot(slot)
+                });
+
+                $('#availability-' + availability.cid).append(view.render().el);
+            });
         },
-        addAll: function(availableSlots) {
-            availableSlots.each(this.addOne, this);
+        addAll: function() {
+            this.availabilities.each(this.addOne, this);
         }
     });
 

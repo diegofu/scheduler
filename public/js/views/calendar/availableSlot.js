@@ -1,9 +1,25 @@
-define(['underscore', 'backbone'], function(_, Backbone) {
+define([
+    'underscore',
+    'backbone',
+    'text!templates/Calendars/AvailableSlot.html',
+    'datetimepicker'
+], function(_, Backbone, AvailableSlotTemplate) {
     var AvailableSlot = Backbone.View.extend({
-        tagName: 'li',
+        initialize: function(options) {
+            this.render();
+        },
 
-        initialize: function() {
+        render: function() {
             console.log(this.model);
+            this.$el.html(_.template(AvailableSlotTemplate, {
+                slot: this.model
+            }));
+            console.log(this);
+
+            this.$('.datetimepicker').datetimepicker({
+                format: 'H:mm',
+            });
+            return this;
         }
     });
 
