@@ -3,7 +3,6 @@
 var models = require('../models');
 
 exports.create = function(req, res) {
-    res.json(req.user);
     return models.Calendar.createCalendar(req.body, req.user).then(function(result) {
         return res.json(result);
     }).catch(function(err) {
@@ -85,13 +84,17 @@ exports.read = function(req, res) {
     res.json(req.calendar);
 }
 
-exports.availabilities = function(req, res) {
-    models.Availability.findAll({
+exports.availabilitiesByDay = function(req, res) {
+    models.DayOfWeek.findOne({
+        include: models.Availability,
         where: {
-            CalendarId: req.calendar.id
+            CalendarId: req.calendar.id,
+            dayOfWeek: req.params.day
         }
-    }).then(function(availabilities) {
-        res.json(availabilities);
+    }).then(function(day) {
+        res.json(day.Availabilities);
+    }).catch(function(err) {
+        res.status(404).json(err);
     })
 }
 

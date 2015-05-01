@@ -1,32 +1,20 @@
 <div class="col-md-12">
 <h3>Set when you are available</h3>
-    <% availabilities.each(function(availability) { %>
-        <input type="hidden" class="input-medium form-control" name="Availabilities[][dayOfWeek]" value="<%= availability.dayOfWeek %>">
-        <input type="hidden" class="input-medium form-control" name="Availabilities[][id]" value="<%= availability.id %>">
-        <div class="row">
-            <div class="col-sm-2">
-                <%= moment().isoWeekday(availability.get('dayOfWeek')).format('dddd') %>
-            </div>
-            <div class="col-sm-5">
-                <div class="form-group">
-                    <div class="input-group date datetimepicker">
-                        <input type="text" class="form-control" name="Availabilities[][startTime]" value="<%= availability.get('startTime') %>">
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-time"></span>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-5">
-                <div class="form-group">
-                    <div class="input-group date datetimepicker" id="datetimepicker3">
-                        <input type="text" class="form-control" name="Availabilities[][endTime]" value="<%= availability.get('endTime') %>">
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-time"></span>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <% }) %>
+<table class="table">
+    <thead>
+    <tr>
+        <% for(var i = 0; i < 7; i++) { %>
+            <th>
+                <%= moment().day(i).format('dddd') %>
+            </th>
+        <% } %>
+    </tr>
+    </thead>
+    <tbody>
+        <% for(var i = 0; i < 7; i++) { %>
+            <tr id="availability-<%= i %>">
+            </tr>
+        <% } %>
+    </tbody>
+</table>
 </div>

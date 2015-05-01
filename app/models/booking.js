@@ -27,12 +27,7 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         classMethods: {
             associate: function() {
-                Booking.belongsTo(sequelize.models.Calendar, {
-                    foreignKey: {
-                        allowNull: false,
-                    },
-                    onDelete: 'CASCADE'
-                });
+                Booking.belongsTo(sequelize.models.Calendar);
             }
         }
     });

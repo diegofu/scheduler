@@ -36,12 +36,7 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         classMethods: {
             associate: function(models) {
-                OauthProvider.belongsTo(models.User, {
-                    foreignKey: {
-                        allowNull: false,
-                    },
-                    onDelete: 'CASCADE'
-                });
+                OauthProvider.belongsTo(models.User);
             }
         }
     });

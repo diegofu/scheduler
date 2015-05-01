@@ -19,7 +19,7 @@ define([
                 tab: this.options.tab
             }));
 
-            require(['views/calendars/' + this.options.tab], function(TabView) {
+            require(['views/calendar/' + this.options.tab], function(TabView) {
                 var tabView = new TabView(that.options);
                 tabView.render();
             })

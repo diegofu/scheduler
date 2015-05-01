@@ -12,9 +12,9 @@
                 <textarea class="input-medium form-control" id="calendar-note" name="notes"><%= calendar.get('notes') %></textarea>
                 <span class="help-block"></span>
 
-                <% _.each(calendar.get('Availabilities'), function(availability) { %>
-                    <input type="hidden" class="input-medium form-control" name="Availabilities[][dayOfWeek]" value="<%= availability.dayOfWeek %>">
-                    <input type="hidden" class="input-medium form-control" name="Availabilities[][id]" value="<%= availability.id %>">
+                <% _.each(calendar.get('Availabilities'), function(availability, index) { %>
+                    <input type="hidden" class="input-medium form-control" name="DayOfWeek[<%= index %>][dayOfWeek]" value="<%= availability.dayOfWeek %>">
+                    <input type="hidden" class="input-medium form-control" name="DayOfWeek[<%= index %>][Availabilities][][id]" value="<%= availability.id %>">
                     <div class="row">
                         <div class="col-sm-2">
                             <%= moment().isoWeekday(availability.dayOfWeek).format('dddd') %>
@@ -22,7 +22,7 @@
                         <div class="col-sm-5">
                             <div class="form-group">
                                 <div class="input-group date datetimepicker">
-                                    <input type="text" class="form-control" name="Availabilities[][startTime]" value="<%= availability.startTime %>">
+                                    <input type="text" class="form-control" name="DayOfWeek[<%= index %>][Availabilities][][startTime]" value="<%= availability.startTime %>">
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-time"></span>
                                     </span>
@@ -32,7 +32,7 @@
                         <div class="col-sm-5">
                             <div class="form-group">
                                 <div class="input-group date datetimepicker" id="datetimepicker3">
-                                    <input type="text" class="form-control" name="Availabilities[][endTime]" value="<%= availability.endTime %>">
+                                    <input type="text" class="form-control" name="DayOfWeek[<%= index %>][Availabilities][][endTime]" value="<%= availability.endTime %>">
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-time"></span>
                                     </span>

@@ -53,8 +53,6 @@ define([
         },
         updateView: function(e) {
             e.preventDefault();
-
-            console.log(e.target.dataset.href);
         },
         renderBooking: function(calendar) {
             // @TODO: Move all the logic in the template to a model
@@ -74,7 +72,8 @@ define([
             $('#save-calendar-form-button').attr('disabled', 'disabled');
 
             var that = this;
-            this.calendar.save($(e.target).serializeJSON(), {
+            console.log($(e.target).serializeJSON({useIntKeysAsArrayIndex: true}));
+            this.calendar.save($(e.target).serializeJSON({useIntKeysAsArrayIndex: true}), {
                 success: function(model, response) {
                     that.renderBooking(model);
                     $('#save-calendar-form-button').removeAttr('disabled');

@@ -1,8 +1,6 @@
 "use strict";
 var crypto = require('crypto');
 
-
-// test
 module.exports = function(sequelize, DataTypes) {
     var DayOfWeek = sequelize.define("DayOfWeek", {
         dayOfWeek: {
@@ -16,10 +14,8 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         classMethods: {
             associate: function() {
-                DayOfWeek.belongsTo(sequelize.models.Calendar, {
-                    foreignKey: {
-                        allowNull: false,
-                    },
+                DayOfWeek.belongsTo(sequelize.models.Calendar);
+                DayOfWeek.hasMany(sequelize.models.Availability, {
                     onDelete: 'CASCADE'
                 });
             }

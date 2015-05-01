@@ -20,12 +20,7 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         classMethods: {
             associate: function(models) {
-                ExternalCalendar.belongsTo(models.Calendar, {
-                    foreignKey: {
-                        allowNull: false,
-                    },
-                    onDelete: 'CASCADE'
-                });
+                ExternalCalendar.belongsTo(models.Calendar);
             }
         }
     });

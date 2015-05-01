@@ -7,7 +7,6 @@ define(['underscore', 'backbone', 'moment', 'models/Calendar', 'text!templates/C
         render: function() {
             var that = this;
             this.calendar.fetch().done(function() {
-                console.log(that.calendar);
                 var minLength = _.min([that.calendar.get('defaultLength'), that.calendar.get('minLength'), that.calendar.get('maxLength')]);
                 var slots = that.calculateSlots(minLength);
                 that.$el.html(_.template(BasicTemplate, {

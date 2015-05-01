@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "prestart": "npm install",
-    "start": "nodemon ./bin/www --ignore public/",
+    "start": "nodemon ./bin/www --ignore public/ --ignore app/tests/",
     "postinstall": "bower install"
   },
   "dependencies": {

@@ -12,12 +12,16 @@ var user = 'user';
 describe('Model tests', function() {
     // Recreate the database after each test to ensure isolation
     beforeEach(function(done) {
+        this.timeout(8000);
         models.sequelize.sync({
             force: true
         }).then(function() {
             models.User.create({
-                username: 'username',
-                password: 'password'
+                email: 'email@test.com',
+                firstname: 'firstname',
+                lastname: 'lastname',
+                password: 'password',
+                provider: 'google'
             }).then(function(_user) {
                 models.Calendar.create({
                     name: 'calendar',
@@ -28,8 +32,8 @@ describe('Model tests', function() {
                     UserId: 1
                 }).then(function(calendar) {
                     done();
-                })
-            })
+                });
+            });
         });
     });
 
