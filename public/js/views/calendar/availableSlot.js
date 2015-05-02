@@ -8,13 +8,20 @@ define([
         initialize: function(options) {
             this.render();
         },
-
+        events: {
+            'blur .datetime': 'updateTime'
+        },
+        updateTime: function(e) {
+            console.log(e.target.dataset.name);
+            this.model.set(e.target.dataset.name, e.target.value);
+            if(this.model.hasChanged()) {
+                this.model.save();
+            }
+        },
         render: function() {
-            console.log(this.model);
             this.$el.html(_.template(AvailableSlotTemplate, {
                 slot: this.model
             }));
-            console.log(this);
 
             this.$('.datetimepicker').datetimepicker({
                 format: 'H:mm',

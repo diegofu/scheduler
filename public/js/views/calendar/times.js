@@ -35,18 +35,20 @@ define([
 
         },
         addOne: function(availability) {
+            var that = this;
             _.each(availability.get('Availabilities'), function(slot) {
-                var view = new AvailableSlotView({
-                    model: new AvailableSlot(slot)
-                });
+                        var view = new AvailableSlotView({
+                            model: new AvailableSlot(_.extend(slot, {
+                                    calendarId: that.options.id
+                                }))
+                            });
 
-                $('#availability-' + availability.cid).append(view.render().el);
-            });
-        },
-        addAll: function() {
-            this.availabilities.each(this.addOne, this);
-        }
-    });
-
+                            $('#availability-' + availability.cid).append(view.render().el);
+                        });
+                },
+                addAll: function() {
+                    this.availabilities.each(this.addOne, this);
+                }
+        });
     return CalendarTimes;
 });
