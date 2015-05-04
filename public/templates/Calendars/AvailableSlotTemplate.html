@@ -1,4 +1,5 @@
-<div class="col-sm-3">
+<div class="btn btn-default col-sm-3 place-holder"><%= slot.get('startTime') %></div>
+<div class="col-sm-3 hidden dp-container">
     <div class="form-group">
         <div class="input-group date datetimepicker">
             <input type="text" class="form-control datetime" data-name="startTime" value="<%= slot.get('startTime') %>">
@@ -8,7 +9,8 @@
         </div>
     </div>
 </div>
-<div class="col-sm-3">
+<div class="btn btn-default col-sm-3 place-holder"><%= slot.get('endTime') %></div>
+<div class="col-sm-3 hidden dp-container">
     <div class="form-group">
         <div class="input-group date datetimepicker">
             <input type="text" class="form-control datetime" data-name="startTime" value="<%= slot.get('endTime') %>">

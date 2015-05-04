@@ -45,4 +45,6 @@ module.exports = function(app) {
                 res.status(500).json(err);
             })
         })
+
+    app.route('/calendars/all/:id').get(calendars.all);
 };

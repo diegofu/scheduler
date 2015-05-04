@@ -8,6 +8,8 @@ var models = require('../models'),
     config = require('../../config/config'),
     GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
     LocalStrategy = require('passport-local').Strategy;
+var calendars = require('../controllers/calendars');
+var externalCalendars = require('../controllers/externalCalendars');
 
 var gcal = require('google-calendar'),
     refresh = require('google-refresh-token');
@@ -125,60 +127,30 @@ module.exports = function(app) {
         }
     );
 
-    app.get('/gcalendars/list', function(req, res) {
-        var google_calendar = new gcal.GoogleCalendar(req.user.OauthProviders[0].accessToken);
-        google_calendar.calendarList.list({
-            minAccessRole: 'writer'
-        }, function(err, calendarList) {
-            console.log(err);
-            res.json(calendarList);
-        })
-    });
-
-    app.route('/externalCalendars')
-        .get(users.requiresLogin, function(req, res) {
-            models.OauthProvider.findAll({
-                include: [{
-                    model: models.User,
-                    where: {
-                        id: req.user.id
-                    }
-                }]
-            }).then(function(oauthProvider) {
-                if (oauthProvider.length) {
-                    // @TODO: add multiple provider support
-                    var google_calendar = new gcal.GoogleCalendar(oauthProvider[0].accessToken);
-                    google_calendar.calendarList.list({
-                        minAccessRole: 'writer'
-                    }, function(err, calendarList) {
-                        if (err) {
-                            refresh(oauthProvider[0].refreshToken, config.google.clientID, config.google.clientSecret, function(err, json, response) {
-                                if (err) {
-                                    return handleError(err);
-                                }
-                                if (json.error) {return handleError(new Error(response.statusCode + ': ' + json.error));}
-
-                                var newAccessToken = json.accessToken;
-                                if (!newAccessToken) {
-                                    return handleError(new Error(response.statusCode + ': refreshToken error'));
-                                }
-                                var expireAt = new Date(+new Date + parseInt(json.expiresIn, 10));
-                                oauthProvider[0].setDataValue('accessToken', newAccessToken);
-                                oauthProvider[0].save().then(function() {
-                                    res.redirect('/externalCalendars');
-                                });
-                            });
-                        } else {
-                            // @TODO: When there are too many calendars
-                            res.json(calendarList.items);
-                        }
-                    });
-                } else {
-                    // TODO: Redirect user to add a provider page
-                    res.json('This should never happen!');
+    app.route('/externalCalendars/:externalCalendarId?*')
+        .get(users.requiresLogin, externalCalendars.findAll)
+        .post(users.requiresLogin, calendars.hasAuthorization, externalCalendars.create)
+        .delete(users.requiresLogin, function(req, res, next) {
+            models.ExternalCalendar.find({
+                include: [models.Calendar],
+                where: {
+                    id: req.params.externalCalendarId
                 }
+            }).then(function(externalCalendar) {
+                req.calendar = externalCalendar.Calendar
+                next()
             })
-        })
+        }, calendars.hasAuthorization, function(req, res) {
+            models.ExternalCalendar.destroy({
+                where: {
+                    id: req.params.externalCalendarId
+                }
+            }).then(function(result) {
+                res.json(result);
+            }).catch(function(err) {
+                res.status(500).json(err);
+            })
+        });
 
-
+    app.param('calendarId', calendars.calendarByID);
 };

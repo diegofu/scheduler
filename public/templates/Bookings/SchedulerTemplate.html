@@ -1,10 +1,10 @@
 <div class="row">
     <%
-    var internal = _.min([calendar.get('defaultLength'), calendar.get('minLength')]);
+    var internal = _.min([scheduler.get('defaultLength'), scheduler.get('minLength')]);
 	var startMoment = moment(minAvailability.startTime, 'H:mm');
 	var endMoment = moment(maxAvailability.endTime, 'H:mm');
-    var currentStart = moment(calendar.get('Availabilities')[0].startTime, 'H:mm');
-    var currentEnd = moment(calendar.get('Availabilities')[0].endTime, 'H:mm');
+    var currentStart = moment(scheduler.get('Availabilities')[0].startTime, 'H:mm');
+    var currentEnd = moment(scheduler.get('Availabilities')[0].endTime, 'H:mm');
 
     for(var i = 0; i < 7; i++) {
     %>
@@ -17,8 +17,8 @@
             </div>
 
             <%
-                var currentStart = moment(calendar.get('Availabilities')[i].startTime, 'H:mm');
-                var currentEnd = moment(calendar.get('Availabilities')[i].endTime, 'H:mm');
+                var currentStart = moment(scheduler.get('Availabilities')[i].startTime, 'H:mm');
+                var currentEnd = moment(scheduler.get('Availabilities')[i].endTime, 'H:mm');
                 currentStart.date(startMoment.date()).month(startMoment.month()).year(startMoment.year());
                 currentEnd.date(endMoment.date()).month(endMoment.month()).year(endMoment.year());
             %>
@@ -26,11 +26,11 @@
                 <div class="row">
                     <%
                         var disabled = '';
-                        if( currentStart.unix() > j || currentEnd.unix() < j || calendar.slotBooked(j)) {
+                        if( currentStart.unix() > j || currentEnd.unix() < j || scheduler.slotBooked(j)) {
                             disabled = 'disabled';
                         }
                     %>
-                    <a href="#/calendars/<%= calendar.get('id') %>/<%= j %>" class="btn btn-success col-sm-11 col-sm-offset-1" <%= disabled %>>
+                    <a href="#/schedulers/<%= scheduler.get('id') %>/<%= j %>" class="btn btn-success col-sm-11 col-sm-offset-1" <%= disabled %>>
                         <%= moment.unix(j).format('H:mm') %>
                     </a>
 				</div>

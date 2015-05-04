@@ -1,8 +1,16 @@
-define(['underscore', 'backbone', 'moment', 'models/Calendar', 'text!templates/Calendars/BasicTemplate.html'], function(_, Backbone, Moment, Calendar, BasicTemplate) {
+define([
+    'underscore',
+    'backbone',
+    'moment',
+    'models/Calendar',
+    'views/booking/scheduler',
+    'text!templates/Calendars/BasicTemplate.html'
+], function(_, Backbone, Moment, Calendar, SchedulerView, BasicTemplate) {
     var CalendarBasic = Backbone.View.extend({
         el: $('#tab-content'),
         initialize: function(options) {
             this.calendar = new Calendar({id: options.id});
+            this.schedulerView = new SchedulerView({id: options.id});
         },
         render: function() {
             var that = this;
@@ -17,7 +25,8 @@ define(['underscore', 'backbone', 'moment', 'models/Calendar', 'text!templates/C
                 }));
             });
 
-            return this;
+            this.$el.append(this.schedulerView.render());
+
         },
         calculateSlots: function(length) {
             var slots = [];

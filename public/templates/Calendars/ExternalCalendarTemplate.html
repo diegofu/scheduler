@@ -1,0 +1,7 @@
+<% externalCalendars.each(function(calendar) { %>
+    <div class="checkbox external-calendar">
+        <label for="<%= calendar.cid %>">
+            <input type="checkbox" id="<%= calendar.cid %>" data-cid="<%= calendar.cid %>"><%= calendar.get('summary') %>
+        </label>
+    </div>
+<% }) %>

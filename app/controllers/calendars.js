@@ -98,10 +98,39 @@ exports.availabilities = function(req, res) {
 }
 
 exports.hasAuthorization = function(req, res, next) {
+    if(!req.calendar) {
+        if(req.body.calendarId) {
+            var calendarId = req.body.calendarId;
+        } else if (req.body.CalendarId) {
+            var calendarId = req.body.CalendarId;
+        }
+
+        models.Calendar.find({
+            where: {
+                id: req.body.calendarId
+            }
+        }).then(function(calendar) {
+            req.calendar = calendar;
+        })
+    }
+
     if (req.calendar.UserId !== req.user.id) {
         return res.status(403).send({
             message: 'User is not authorized'
         });
     }
     next();
+};
+
+exports.all = function(req, res) {
+    models.Calendar.find({
+        include: [{
+            model: models.DayOfWeek,
+            include: models.Availability
+        }, {
+            model: models.Booking
+        }]
+    }).then(function(calendar) {
+        res.json(calendar);
+    });
 };
