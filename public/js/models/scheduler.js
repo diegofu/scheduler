@@ -5,21 +5,32 @@ define(['underscore', 'backbone', 'moment'], function(_, Backbone, moment) {
         },
         urlRoot: '/calendars/all',
         minAvailability: function() {
-            console.log(this);
-            var min = Number.MAX_VALUE;
+            var min = undefined;
             _.each(this.get('DayOfWeeks'), function(day) {
-                var temp_min = _.min(day.Availabilities, function(availability) {
-                    console.log(moment(availability.startTime, 'H:mm').unix());
+                var tempMin = _.min(day.Availabilities, function(availability) {
                     return moment(availability.startTime, 'H:mm').unix();
                 });
 
-                console.log(temp_min);
-                if(min > temp_min) {
-                    min = temp_min;
+                if(min === undefined || moment(min.startTime, 'H:mm').unix() > moment(tempMin.startTime, 'H:mm').unix()) {
+                    min = tempMin;
                 }
-            });1
+            });
 
             return min;
+        },
+        maxAvailability: function() {
+            var max = undefined;
+            _.each(this.get('DayOfWeeks'), function(day) {
+                var tempMax = _.max(day.Availabilities, function(availability) {
+                    return moment(availability.startTime, 'H:mm').unix();
+                });
+
+                if(max === undefined || moment(max.startTime, 'H:mm').unix() < moment(tempMax.startTime, 'H:mm').unix()) {
+                    min = tempMax;
+                }
+            });
+
+            return max;
         }
     });
 

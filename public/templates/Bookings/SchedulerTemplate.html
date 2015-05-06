@@ -2,10 +2,10 @@
     <%
     var internal = _.min([scheduler.get('defaultLength'), scheduler.get('minLength')]);
 	var startMoment = moment(scheduler.minAvailability(), 'H:mm');
-    console.log(startMoment);
-	var endMoment = moment(maxAvailability.endTime, 'H:mm');
-    var currentStart = moment(scheduler.get('Availabilities')[0].startTime, 'H:mm');
-    var currentEnd = moment(scheduler.get('Availabilities')[0].endTime, 'H:mm');
+    # console.log(startMoment);
+	var endMoment = moment(scheduler.maxAvailability(), 'H:mm');
+    # var currentStart = moment(scheduler.get('DayOfWeeks').Availabilities[0].startTime, 'H:mm');
+    # var currentEnd = moment(scheduler.get('DayOfWeeks').Availabilities[0].endTime, 'H:mm');
 
     for(var i = 0; i < 7; i++) {
     %>

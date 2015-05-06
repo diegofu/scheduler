@@ -4,7 +4,7 @@ define([
     'moment',
     'models/scheduler',
     'text!templates/Bookings/SchedulerTemplate.html'
-], function(_, Backbone, Moment, Scheduler, SchdulerTemplate) {
+], function(_, Backbone, moment, Scheduler, SchdulerTemplate) {
     var Preview = Backbone.View.extend({
         // el: $('#tab-content'),
         initialize: function(options) {
@@ -16,7 +16,7 @@ define([
                 var minLength = _.min([that.scheduler.get('defaultLength'), that.scheduler.get('minLength'), that.scheduler.get('maxLength')]);
                 that.$el.html(_.template(SchdulerTemplate, {
                     scheduler: that.scheduler,
-                    moment: Moment,
+                    moment: moment,
                     minLength: minLength,
                 }));
             });
