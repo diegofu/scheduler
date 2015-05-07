@@ -26,11 +26,27 @@ define(['underscore', 'backbone', 'moment'], function(_, Backbone, moment) {
                 });
 
                 if(max === undefined || moment(max.startTime, 'H:mm').unix() < moment(tempMax.startTime, 'H:mm').unix()) {
-                    min = tempMax;
+                    max = tempMax;
                 }
             });
 
             return max;
+        },
+        slotBooked: function(startTimestamp) {
+            if(!this.has('id') || _.isEmpty(this.get('Bookings'))) {
+                return false;
+            }
+
+            var endTimestamp = startTimestamp + (this.get('minLength') * 60);
+            for(var i = 0; i < this.get('Bookings').length; i++) {
+                if(
+                    (startTimestamp >= this.get('Bookings')[i].startTime && startTimestamp < this.get('Bookings')[i].endTime) ||
+                    (endTimestamp > this.get('Bookings')[i].startTime && endTimestamp <= this.get('Bookings')[i].endTime)
+                ) {
+                    return true;
+                }
+            }
+            return false;
         }
     });
 

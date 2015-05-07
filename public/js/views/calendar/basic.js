@@ -22,10 +22,11 @@ define([
                     moment: Moment,
                     minLength: minLength,
                     slots: slots
-                }));
+                })).promise().done(function() {
+                    that.$el.append(that.schedulerView.render().el);
+                });
             });
 
-            this.$el.append(this.schedulerView.render());
 
         },
         calculateSlots: function(length) {
