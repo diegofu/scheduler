@@ -10,9 +10,10 @@ define([
     'datetimepicker'
 ], function(_, Backbone, Calendar, GoogleCalendarCollection, CalendarTemplate, GridTemplate, moment) {
     var CalendarView = Backbone.View.extend({
-        el: $('#content'),
-        initialize: function(options) {
-            this.calendar = new Calendar(options);
+        id: 'content',
+        className: 'row',
+        initialize: function() {
+            this.calendar = new Calendar();
         },
         render: function() {
             var that = this;

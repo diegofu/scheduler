@@ -22,36 +22,13 @@ exports.list = function(req, res) {
 
 // @TODO: I dont know wtf I am doing here
 exports.update = function(req, res) {
-    return models.sequelize.transaction(function(t) {
-        return models.Calendar.update(req.body, {
-            transaction: t,
-            where: {
-                id: req.body.id
-            }
-        }).then(function() {
-            return models.sequelize.Promise.map(req.body.Availabilities, function(a) {
-                return models.Availability.update(a, {
-                    where: {
-                        id: a.id,
-                        CalendarId: req.body.id
-                    },
-                    transaction: t
-                })
-            })
-        });
+    // console.log(req.calendar);
+    return models.Calendar.update(req.body, {
+        where: {
+            id: req.calendar.id
+        }
     }).then(function(result) {
-        return models.Calendar.find({
-            where: {
-                id: req.body.id
-            },
-            include: [models.Availability, models.Booking]
-        }).then(function(calendar) {
-            return res.json(calendar);
-        }).catch(function(err) {
-            return res.status(500).json(err);
-        });
-    }).catch(function(err) {
-        return res.status(500).json(err);
+        res.json(req.body);
     });
 }
 
@@ -98,29 +75,41 @@ exports.availabilities = function(req, res) {
 }
 
 exports.hasAuthorization = function(req, res, next) {
+    findCalendar(req, res, function() {
+        if (req.calendar.UserId !== req.user.id) {
+            return res.status(403).send({
+                message: 'User is not authorized'
+            });
+        }
+        next();
+    })
+};
+
+var findCalendar = function(req, res, next) {
     if(!req.calendar) {
         if(req.body.calendarId) {
             var calendarId = req.body.calendarId;
         } else if (req.body.CalendarId) {
             var calendarId = req.body.CalendarId;
+        } else {
+            return res.status(403).send({
+                message: 'User is not authorized'
+            });
         }
 
         models.Calendar.find({
             where: {
-                id: req.body.calendarId
+                id: calendarId
             }
         }).then(function(calendar) {
             req.calendar = calendar;
+            next();
         })
+    } else {
+        next();
     }
 
-    if (req.calendar.UserId !== req.user.id) {
-        return res.status(403).send({
-            message: 'User is not authorized'
-        });
-    }
-    next();
-};
+}
 
 exports.all = function(req, res) {
     models.Calendar.find({
@@ -129,7 +118,10 @@ exports.all = function(req, res) {
             include: models.Availability
         }, {
             model: models.Booking
-        }]
+        }],
+        where: {
+            id: req.params.id
+        }
     }).then(function(calendar) {
         res.json(calendar);
     });

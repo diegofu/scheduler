@@ -1,6 +1,7 @@
 define(['underscore', 'backbone', 'collections/calendars', 'text!templates/DashboardTemplate.html'], function(_, Backbone, CalendarCollection, DashboardTemplate) {
     var Dashboard = Backbone.View.extend({
-    	el: $('#content'),
+    	id: 'content',
+        className: 'row',
         initialize: function() {
             this.calendarColleciton = new CalendarCollection;
         },
@@ -9,6 +10,8 @@ define(['underscore', 'backbone', 'collections/calendars', 'text!templates/Dashb
             this.calendarColleciton.fetch().done(function() {
                 that.$el.html(_.template(DashboardTemplate, {calendars: that.calendarColleciton}));
             });
+
+            return this;
         },
         events: {
             'click .remove-calendar': 'removeCalendar'

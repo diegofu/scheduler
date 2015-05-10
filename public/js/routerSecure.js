@@ -37,7 +37,10 @@ define([
         routes: {
             'calendars/:id(/:tab)': 'editCalendar',
             'calendars/:id': 'editCalendar',
-            'calendar/create': 'createCalendar'
+            'calendar/create': 'createCalendar',
+            'scheduler/:id/:timestamp': 'schedulerBooking',
+
+            '': 'dashboard'
         }
     });
 
@@ -45,24 +48,43 @@ define([
         var router = new AppRouter(options);
         // router.register('calendar/create', 'CalendarView', 'views/calendar');
         // router.register('calendars/:id', 'CalendarView', 'views/calendar');
-        // // router.register('calendars/:id/:timestamp', 'BookingView', 'views/booking');
+        // router.register('scheduler/:id/:timestamp', 'BookingView', 'views/booking');
         // router.register('bookings/list', 'BookingList', 'views/bookingList');
-        router.register('', 'Dashboard', 'views/dashboard');
+        // router.register('', 'Dashboard', 'views/dashboard');
 
         router.on('route:editCalendar', function(id, tab) {
-            if(tab == undefined) {
+            if (tab == undefined) {
                 tab = 'basic';
             }
             require(['views/editCalendar'], function(EditCalendarView) {
-                var editCalendar = new EditCalendarView({id: id, tab: tab});
-                editCalendar.render();
+                var editCalendar = new EditCalendarView({
+                    calendarId: id,
+                    tab: tab
+                });
+                $('.container').html(editCalendar.render().el);
             })
         })
 
         router.on('route:createCalendar', function() {
             require(['views/calendar'], function(CalendarView) {
                 var calendarView = new CalendarView();
-                calendarView.render();
+                $('.container').html(calendarView.render().el);
+            })
+        });
+
+        router.on('route:schedulerBooking', function(id, timestamp) {
+            require(['views/booking'], function(BookingView) {
+                var bookingView = new BookingView({
+                    calendarId: id
+                });
+                $('.container').html(bookingView.render().el);
+            })
+        })
+
+        router.on('route:dashboard', function() {
+            require(['views/dashboard'], function(DashboardView) {
+                var dashboardView = new DashboardView();
+                $('.container').html(dashboardView.render().el);
             })
         })
 

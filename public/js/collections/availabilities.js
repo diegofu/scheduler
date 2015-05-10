@@ -4,7 +4,7 @@ define(['underscore', 'backbone'], function(_, Backbone) {
             this.options = options;
         },
         url: function() {
-            return '/calendars/' + this.options.id + '/availabilities';
+            return '/calendars/' + this.options.model.id + '/availabilities';
         },
     });
 

@@ -36,13 +36,13 @@ define(['underscore', 'backbone', 'moment'], function(_, Backbone, moment) {
             maxLength: 60
         },
         slotBooked: function(startTimestamp) {
-            if(!this.has('id') || _.isEmpty(this.get('Bookings'))) {
+            if (!this.has('id') || _.isEmpty(this.get('Bookings'))) {
                 return false;
             }
 
             var endTimestamp = startTimestamp + (this.get('minLength') * 60);
-            for(var i = 0; i < this.get('Bookings').length; i++) {
-                if(
+            for (var i = 0; i < this.get('Bookings').length; i++) {
+                if (
                     (startTimestamp >= this.get('Bookings')[i].startTime && startTimestamp < this.get('Bookings')[i].endTime) ||
                     (endTimestamp > this.get('Bookings')[i].startTime && endTimestamp <= this.get('Bookings')[i].endTime)
                 ) {

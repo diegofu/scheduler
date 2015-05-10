@@ -6,7 +6,7 @@ define([
     'datetimepicker'
 ], function(_, Backbone, GoogleCalendarCollection, ExternalCalendarTemplate) {
     var ExternalCalendar = Backbone.View.extend({
-        el: $('#tab-content'),
+        id: 'tab-content',
         initialize: function(options) {
             this.options = options;
             this.googleCalendarCollection = new GoogleCalendarCollection();
@@ -16,7 +16,17 @@ define([
             'change .external-calendar': 'toggleCalendar'
         },
         toggleCalendar: function(e) {
-            // Can't use save or destroy function
+            var model = this.googleCalendarCollection.get(e.target.dataset.cid);
+            console.log(model);
+            model.set({CalendarId: this.options.model.id});
+            console.log(model);
+            if(e.target.checked) {
+                // model.unset('id');
+                model.save();
+            } else {
+                model.sync('delete', model);
+                model.id = null;
+            }
         },
         render: function() {
             var that = this;
@@ -27,6 +37,8 @@ define([
                 });
                 that.$el.html(exterTemp);
             });
+
+            return this;
         }
     });
 

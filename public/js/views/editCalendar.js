@@ -6,10 +6,11 @@ define([
     'text!templates/TabTemplate.html'
 ], function(_, Backbone, Bootstrap, Calendar, TabTemplate) {
     var EditCalendar = Backbone.View.extend({
-        el: $('#content'),
+        id: 'content',
+        className: 'row',
         initialize: function(options) {
             this.calendar = new Calendar({
-                id: options.id
+                id: options.calendarId
             });
             this.options = options;
         },
@@ -20,9 +21,14 @@ define([
             }));
 
             require(['views/calendar/' + this.options.tab], function(TabView) {
-                var tabView = new TabView(that.options);
-                tabView.render();
-            })
+                var tabView = new TabView({
+                    model: that.calendar,
+                    id: 'tab-content',
+                    className: 'row'
+                });
+                that.$el.append(tabView.render().el);
+            });
+            return this;
         },
         events: {
             'click .calendar-control': 'changeView'

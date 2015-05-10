@@ -6,9 +6,10 @@ define([
     'text!templates/Bookings/SchedulerTemplate.html'
 ], function(_, Backbone, moment, Scheduler, SchdulerTemplate) {
     var Preview = Backbone.View.extend({
-        // el: $('#tab-content'),
+        id: 'scheduler-content',
+        className: 'col-md-12',
         initialize: function(options) {
-            this.scheduler = new Scheduler({id: options.id});
+            this.scheduler = new Scheduler({id: options.schedulerId});
         },
         render: function() {
             var that = this;
@@ -22,7 +23,6 @@ define([
             });
 
             return this;
-
         }
     });
 

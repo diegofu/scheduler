@@ -1,13 +1,13 @@
 <div class="row">
     <%
-    var internal = _.min([scheduler.get('defaultLength'), scheduler.get('minLength')]);
+    var interval = _.min([scheduler.get('defaultLength'), scheduler.get('minLength')]);
     var startMoment = moment(scheduler.minAvailability().startTime, 'H:mm');
     var endMoment = moment(scheduler.maxAvailability().endTime, 'H:mm');
 
 
     for(var i = 0; i < 7; i++) {
     %>
-        <div class="col-md-1 text-center">
+        <div class="day-availability-container col-md-1 text-center">
             <div>
                 <%= startMoment.format('ddd') %>
             </div>
@@ -16,20 +16,20 @@
             </div>
 
             <%
-                var currentStart = moment(scheduler.get('DayOfWeeks')[i].startTime, 'H:mm');
-                var currentEnd = moment(scheduler.get('DayOfWeeks')[i].endTime, 'H:mm');
-                currentStart.date(startMoment.date()).month(startMoment.month()).year(startMoment.year());
-                currentEnd.date(endMoment.date()).month(endMoment.month()).year(endMoment.year());
+                var dayOfWeek = scheduler.getDayOfWeek(startMoment.day());
+                var timeOfDay = scheduler.getTimeOfDay(dayOfWeek);
+                var currentStart = moment(timeOfDay.startTime, 'H:mm').date(startMoment.date()).month(startMoment.month()).year(startMoment.year());
+                var currentEnd = moment(timeOfDay.endTime, 'H:mm').date(endMoment.date()).month(endMoment.month()).year(endMoment.year());
             %>
-            <% for(var j = startMoment.unix(); j <= endMoment.unix(); j += internal * 60) { %>
+            <% for(var j = startMoment.unix(); j < endMoment.unix(); j += interval * 60) { %>
                 <div class="row">
                     <%
                         var disabled = '';
-                        if( currentStart.unix() > j || currentEnd.unix() < j || scheduler.slotBooked(j)) {
+                        if( currentStart.unix() > j || currentEnd.unix() < j || scheduler.slotBooked(j) || !dayOfWeek.slotAvailable(j, interval)) {
                             disabled = 'disabled';
                         }
                     %>
-                    <a href="#/schedulers/<%= scheduler.get('id') %>/<%= j %>" class="btn btn-success col-sm-11 col-sm-offset-1" <%= disabled %>>
+                    <a href="#/scheduler/<%= scheduler.get('id') %>/<%= j %>" class="btn btn-success col-sm-11 col-sm-offset-1" <%= disabled %>>
                         <%= moment.unix(j).format('H:mm') %>
                     </a>
 				</div>

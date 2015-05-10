@@ -8,11 +8,11 @@ define([
     'serializejson'
 ], function(_, Backbone, Booking, Calendar, BookingTemplate, moment) {
     var BookSlot = Backbone.View.extend({
-    	el: $('#content'),
+    	id: 'content',
         initialize: function(options) {
             this.options = options;
-            this.calendar = new Calendar({id: options.id});
-            this.booking = new Booking({CalendarId: options.id});
+            this.calendar = new Calendar({id: options.calendarId});
+            this.booking = new Booking({CalendarId: options.calendarId});
         },
         render: function() {
             var that = this;
@@ -25,7 +25,9 @@ define([
                     time: moment.unix(that.options.timestamp).format(),
                     calendar: that.calendar
                 }));
-            })
+            });
+
+            return this;
         },
         events: {
             'submit #save-booking-form': 'confirmBooking'

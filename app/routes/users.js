@@ -115,19 +115,17 @@ module.exports = function(app) {
                 if (err || !user) {
                     return res.redirect('/#/signup');
                 }
-
                 req.login(user, function(err) {
                     if (err) {
                         return res.redirect('/#!/signin');
                     }
-
                     return res.redirect('/dashboard');
                 })
             })(req, res, next);
         }
     );
 
-    app.route('/externalCalendars/:externalCalendarId?*')
+    app.route('/externalCalendars/:externalCalendarId?')
         .get(users.requiresLogin, externalCalendars.findAll)
         .post(users.requiresLogin, calendars.hasAuthorization, externalCalendars.create)
         .delete(users.requiresLogin, function(req, res, next) {
