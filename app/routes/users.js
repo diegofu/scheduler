@@ -125,30 +125,13 @@ module.exports = function(app) {
         }
     );
 
-    app.route('/externalCalendars/:externalCalendarId?')
+    app.route('/externalCalendars/:calendarId/:externalCalendarId?')
         .get(users.requiresLogin, externalCalendars.findAll)
         .post(users.requiresLogin, calendars.hasAuthorization, externalCalendars.create)
-        .delete(users.requiresLogin, function(req, res, next) {
-            models.ExternalCalendar.find({
-                include: [models.Calendar],
-                where: {
-                    id: req.params.externalCalendarId
-                }
-            }).then(function(externalCalendar) {
-                req.calendar = externalCalendar.Calendar
-                next()
-            })
-        }, calendars.hasAuthorization, function(req, res) {
-            models.ExternalCalendar.destroy({
-                where: {
-                    id: req.params.externalCalendarId
-                }
-            }).then(function(result) {
-                res.json(result);
-            }).catch(function(err) {
-                res.status(500).json(err);
-            })
-        });
+        .delete(users.requiresLogin, externalCalendars.getCalendar, calendars.hasAuthorization, externalCalendars.delete);
+
+    app.route('/externalCalendars/getExisting/:calendarId')
+        .get(users.requiresLogin, calendars.hasAuthorization, externalCalendars.getExisting);
 
     app.param('calendarId', calendars.calendarByID);
 };

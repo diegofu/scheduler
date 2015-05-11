@@ -9,19 +9,19 @@ define([
         id: 'tab-content',
         initialize: function(options) {
             this.options = options;
-            this.googleCalendarCollection = new GoogleCalendarCollection();
-            this.render();
+            this.googleCalendarCollection = new GoogleCalendarCollection({
+                calendarId: options.model.id
+            });
         },
         events: {
             'change .external-calendar': 'toggleCalendar'
         },
         toggleCalendar: function(e) {
             var model = this.googleCalendarCollection.get(e.target.dataset.cid);
-            console.log(model);
-            model.set({CalendarId: this.options.model.id});
-            console.log(model);
-            if(e.target.checked) {
-                // model.unset('id');
+            model.set({
+                CalendarId: this.options.model.id
+            });
+            if (e.target.checked) {
                 model.save();
             } else {
                 model.sync('delete', model);
@@ -32,6 +32,7 @@ define([
             var that = this;
 
             this.googleCalendarCollection.fetch().done(function() {
+                console.log(that.googleCalendarCollection.toJSON());
                 var exterTemp = _.template(ExternalCalendarTemplate, {
                     externalCalendars: that.googleCalendarCollection
                 });
