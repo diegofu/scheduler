@@ -1,5 +1,7 @@
 "use strict";
 var crypto = require('crypto');
+var refresh = require('google-refresh-token');
+var config = require('../../config/config');
 
 module.exports = function(sequelize, DataTypes) {
     var OauthProvider = sequelize.define('OauthProvider', {
@@ -38,33 +40,29 @@ module.exports = function(sequelize, DataTypes) {
             associate: function(models) {
                 OauthProvider.belongsTo(models.User);
             },
-            refreshToken: function(token, cb) {
-                refresh(oauthProvider[0].refreshToken, config.google.clientID, config.google.clientSecret, function(err, json, response) {
+            refreshToken: function(oauthProvider, cb) {
+                refresh(oauthProvider.refreshToken, config.google.clientID, config.google.clientSecret, function(err, body, res) {
                     if (err) {
-                        return cb(err, json, response);
-                    }
-                    if (json.error) {
-                        return handleError(new Error(response.statusCode + ': ' + json.error));
+                        return cb(err, null);
                     }
 
                     if (parseInt(res.statusCode / 100, 10) !== 2) {
-                      if (body.error) {
-                        return cb(new Error(res.statusCode + ': ' + (body.error.message || body.error)), body, res);
-                      }
-                      if (!body.access_token) {
-                        return cb(new Error(res.statusCode + ': refreshToken error'), body, res);
-                      }
-                      return cb(null, body, res);
+                        if (body.error) {
+                            return cb(new Error(res.statusCode + ': ' + (body.error.message || body.error)), null);
+                        }
+                        if (!body.access_token) {
+                            return cb(new Error(res.statusCode + ': refreshToken error'), null);
+                        }
                     }
 
-                    var newAccessToken = json.accessToken;
-                    if (!newAccessToken) {
-                        return handleError(new Error(response.statusCode + ': refreshToken error'));
-                    }
-                    var expireAt = new Date(+new Date + parseInt(json.expiresIn, 10));
-                    oauthProvider[0].setDataValue('accessToken', newAccessToken);
-                    oauthProvider[0].save().then(function() {
-                        res.redirect('/externalCalendars/' + req.calendar.id);
+                    var newAccessToken = body.accessToken;
+                    var expireAt = new Date(+new Date + parseInt(body.expiresIn, 10));
+
+                    oauthProvider.setDataValue('accessToken', newAccessToken);
+                    oauthProvider.save().then(function(result) {
+                        cb(null, result);
+                    }).catch(function(err) {
+                        cb(err, null);
                     });
                 });
             }

@@ -1,5 +1,5 @@
 "use strict";
-var crypto = require('crypto');
+var gcal = require('google-calendar');
 
 module.exports = function(sequelize, DataTypes) {
     var ExternalCalendar = sequelize.define("ExternalCalendar", {
@@ -33,6 +33,15 @@ module.exports = function(sequelize, DataTypes) {
         classMethods: {
             associate: function(models) {
                 ExternalCalendar.belongsTo(models.Calendar);
+            },
+            addEvents: function(calendarId, accessToken, cb) {
+                var google_calendar = new gcal.GoogleCalendar(accessToken);
+                google_calendar.events.list(calendarId, function(err, calendarList) {
+                    if(err) {
+                        
+                    }
+                    return cb(err, calendarList);
+                })
             }
         }
     });

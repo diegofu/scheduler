@@ -22,23 +22,12 @@ exports.findAll = function(req, res) {
                 minAccessRole: 'writer'
             }, function(err, calendarList) {
                 if (err) {
-                    refresh(oauthProvider[0].refreshToken, config.google.clientID, config.google.clientSecret, function(err, json, response) {
-                        if (err) {
-                            return handleError(err);
-                        }
-                        if (json.error) {
-                            return handleError(new Error(response.statusCode + ': ' + json.error));
-                        }
-
-                        var newAccessToken = json.accessToken;
-                        if (!newAccessToken) {
-                            return handleError(new Error(response.statusCode + ': refreshToken error'));
-                        }
-                        var expireAt = new Date(+new Date + parseInt(json.expiresIn, 10));
-                        oauthProvider[0].setDataValue('accessToken', newAccessToken);
-                        oauthProvider[0].save().then(function() {
+                    models.OauthProvider.refreshToken(oauthProvider[0], function(err, result) {
+                        if(err) {
+                            // @TODO: Can't refresh token. do something???
+                        } else {
                             res.redirect('/externalCalendars/' + req.calendar.id);
-                        });
+                        }
                     });
                 } else {
                     // @TODO: When there are too many google calendars
@@ -47,7 +36,6 @@ exports.findAll = function(req, res) {
                             CalendarId: req.calendar.id
                         }
                     }).then(function(existingCalendars) {
-
                         calendarList.items.forEach(function(item) {
                             item.externalCalendarId = item.id;
                             item.provider = 'google';
