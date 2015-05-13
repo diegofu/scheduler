@@ -75,7 +75,8 @@ define([
         router.on('route:schedulerBooking', function(id, timestamp) {
             require(['views/booking'], function(BookingView) {
                 var bookingView = new BookingView({
-                    calendarId: id
+                    calendarId: id,
+                    timestamp: timestamp
                 });
                 $('.container').html(bookingView.render().el);
             })
