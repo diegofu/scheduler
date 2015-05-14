@@ -49,12 +49,18 @@ module.exports = function(app) {
     app.route('/calendars/all/:id').get(calendars.all);
 
     app.get('/test', function(req, res) {
-        models.ExternalCalendar.addEvents(calendarId, accessToken, function(err, calendarList) {
-            if(err) {
-                res.status(500).json(err);
-            } else {
-                res.json(calendarList);
+        models.OauthProvider.find({
+            where: {
+                UserId: req.user.id
             }
+        }).then(function(oauthProvider) {
+            models.ExternalCalendar.getEvents('diegofu714@gmail.com', oauthProvider, function(err, calendarList) {
+                if(err) {
+                    res.status(500).json(err);
+                } else {
+                    res.json(calendarList);
+                }
+            })
         })
     })
 };

@@ -22,7 +22,7 @@ exports.findAll = function(req, res) {
                 minAccessRole: 'writer'
             }, function(err, calendarList) {
                 if (err) {
-                    models.OauthProvider.refreshToken(oauthProvider[0], function(err, result) {
+                    oauthProvider[0].getNewToken(function(err, result) {
                         if(err) {
                             // @TODO: Can't refresh token. do something???
                         } else {

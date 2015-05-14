@@ -32,7 +32,6 @@ define([
             var that = this;
 
             this.googleCalendarCollection.fetch().done(function() {
-                console.log(that.googleCalendarCollection.toJSON());
                 var exterTemp = _.template(ExternalCalendarTemplate, {
                     externalCalendars: that.googleCalendarCollection
                 });

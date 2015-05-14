@@ -39,9 +39,12 @@ module.exports = function(sequelize, DataTypes) {
         classMethods: {
             associate: function(models) {
                 OauthProvider.belongsTo(models.User);
-            },
-            refreshToken: function(oauthProvider, cb) {
-                refresh(oauthProvider.refreshToken, config.google.clientID, config.google.clientSecret, function(err, body, res) {
+            }
+        },
+        instanceMethods: {
+            getNewToken: function(cb) {
+                var that = this;
+                refresh(this.refreshToken, config.google.clientID, config.google.clientSecret, function(err, body, res) {
                     if (err) {
                         return cb(err, null);
                     }
@@ -57,9 +60,8 @@ module.exports = function(sequelize, DataTypes) {
 
                     var newAccessToken = body.accessToken;
                     var expireAt = new Date(+new Date + parseInt(body.expiresIn, 10));
-
-                    oauthProvider.setDataValue('accessToken', newAccessToken);
-                    oauthProvider.save().then(function(result) {
+                    that.setDataValue('accessToken', newAccessToken);
+                    that.save().then(function(result) {
                         cb(null, result);
                     }).catch(function(err) {
                         cb(err, null);

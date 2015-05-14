@@ -38,9 +38,32 @@ module.exports = function(sequelize, DataTypes) {
                 var google_calendar = new gcal.GoogleCalendar(accessToken);
                 google_calendar.events.list(calendarId, function(err, calendarList) {
                     if(err) {
-                        
+
                     }
                     return cb(err, calendarList);
+                })
+            },
+            getEvents: function(calendarId, oauthProvider, cb) {
+                var that = this;
+                var google_calendar = new gcal.GoogleCalendar(oauthProvider.accessToken);
+                google_calendar.events.list(calendarId, function(err, calendarList) {
+                    if(err) {
+                        oauthProvider.getNewToken(function(err, newOauth) {
+                            if(err) {
+                                return cb(err, null);
+                            }
+
+                            google_calendar = new gcal.GoogleCalendar(newOauth.accessToken);
+                            google_calendar.events.list(calendarId, function(err, calendarList) {
+                                if(err) {
+                                    return cb(err, null);
+                                }
+                                return cb(null, calendarList);
+                            })
+                        })
+                    } else {
+                        return cb(null, calendarList);
+                    }
                 })
             }
         }
