@@ -28,6 +28,9 @@ module.exports = function(sequelize, DataTypes) {
         classMethods: {
             associate: function() {
                 Booking.belongsTo(sequelize.models.Calendar);
+            },
+            createBooking: function(values, options) {
+                
             }
         }
     });

@@ -2,6 +2,7 @@
 var crypto = require('crypto');
 var refresh = require('google-refresh-token');
 var config = require('../../config/config');
+var moment = require('moment');
 
 module.exports = function(sequelize, DataTypes) {
     var OauthProvider = sequelize.define('OauthProvider', {
@@ -61,12 +62,21 @@ module.exports = function(sequelize, DataTypes) {
                     var newAccessToken = body.accessToken;
                     var expireAt = new Date(+new Date + parseInt(body.expiresIn, 10));
                     that.setDataValue('accessToken', newAccessToken);
+                    that.setDataValue('expiresIn', parseInt(body.expiresIn, 10) - 100);
                     that.save().then(function(result) {
                         cb(null, result);
                     }).catch(function(err) {
                         cb(err, null);
                     });
                 });
+            },
+            isExpired: function() {
+                console.log(moment(this.updatedAt).unix() + this.expiresIn);
+                console.log(moment().unix());
+                if(moment(this.updatedAt).unix() + this.expiresIn > moment().unix()) {
+                    return false;
+                }
+                return true;
             }
         }
     });

@@ -32,6 +32,9 @@ module.exports = function(sequelize, DataTypes) {
                 Calendar.hasMany(models.Booking, {
                     onDelete: 'CASCADE'
                 });
+                Calendar.hasMany(models.ExternalCalendar, {
+                    onDelete: 'CASCADE'
+                });
             },
             createCalendar: function(calendarData, user) {
                 return sequelize.transaction(function(t) {
