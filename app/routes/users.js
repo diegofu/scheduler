@@ -3,16 +3,16 @@
 
 // User Routes
 var users = require('../controllers/users');
-var models = require('../models'),
-    passport = require('passport'),
-    config = require('../../config/config'),
-    GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
-    LocalStrategy = require('passport-local').Strategy;
+var models = require('../models');
+var config = require('../../config/config');
+var passport = require('passport');
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var LocalStrategy = require('passport-local').Strategy;
 var calendars = require('../controllers/calendars');
 var externalCalendars = require('../controllers/externalCalendars');
-
-var gcal = require('google-calendar'),
-    refresh = require('google-refresh-token');
+var gcal = require('google-calendar');
+var refresh = require('google-refresh-token');
+var googleAuth = require('../../config/strategies/google');
 
 module.exports = function(app) {
 
@@ -70,33 +70,33 @@ module.exports = function(app) {
         }
     ));
 
-    passport.use(new GoogleStrategy({
-            clientID: config.google.clientID,
-            clientSecret: config.google.clientSecret,
-            callbackURL: config.google.callbackURL,
-            passReqToCallback: true
-        },
-        function(req, accessToken, refreshToken, params, profile, done) {
-            var user = {
-                firstname: profile.name.givenName,
-                lastname: profile.name.familyName,
-                email: profile.emails[0].value,
-                provider: profile.provider,
-                oauthProvider: {
-                    providerUniqueId: profile.id,
-                    displayName: profile.displayName,
-                    provider: profile.provider,
-                    accessToken: accessToken,
-                    refreshToken: refreshToken,
-                    tokenType: params.token_type,
-                    idToken: params.id_token,
-                    expiresIn: params.expires_in
-                }
-            };
+    // passport.use(new GoogleStrategy({
+    //         clientID: config.google.clientID,
+    //         clientSecret: config.google.clientSecret,
+    //         callbackURL: config.google.callbackURL,
+    //         passReqToCallback: true
+    //     },
+    //     function(req, accessToken, refreshToken, params, profile, done) {
+    //         var user = {
+    //             firstname: profile.name.givenName,
+    //             lastname: profile.name.familyName,
+    //             email: profile.emails[0].value,
+    //             provider: profile.provider,
+    //             oauthProvider: {
+    //                 providerUniqueId: profile.id,
+    //                 displayName: profile.displayName,
+    //                 provider: profile.provider,
+    //                 accessToken: accessToken,
+    //                 refreshToken: refreshToken,
+    //                 tokenType: params.token_type,
+    //                 idToken: params.id_token,
+    //                 expiresIn: params.expires_in
+    //             }
+    //         };
 
-            users.saveOAuthUserProfile(req, user, done);
-        }
-    ));
+    //         users.saveOAuthUserProfile(req, user, done);
+    //     }
+    // ));
 
     // Setting the google oauth routes
     app.route('/auth/google').get(passport.authenticate('google', {
@@ -106,24 +106,10 @@ module.exports = function(app) {
             'https://www.googleapis.com/auth/calendar'
         ],
         accessType: 'offline',
-        approvalPrompt: 'force' // remove this after db is stable
+        // approvalPrompt: 'force' // remove this after db is stable
     }));
 
-    app.get('/auth/google/callback',
-        function(req, res, next) {
-            passport.authenticate('google', function(err, user, redirectUrl) {
-                if (err || !user) {
-                    return res.redirect('/#/signup');
-                }
-                req.login(user, function(err) {
-                    if (err) {
-                        return res.redirect('/#!/signin');
-                    }
-                    return res.redirect('/dashboard');
-                })
-            })(req, res, next);
-        }
-    );
+    app.get('/auth/google/callback', users.oauthCallback('google'));
 
     app.route('/externalCalendars/:calendarId/:externalCalendarId?')
         .get(users.requiresLogin, externalCalendars.findAll)

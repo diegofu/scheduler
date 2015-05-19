@@ -63,14 +63,4 @@ module.exports = function(app) {
         })
 
     app.route('/calendars/all/:id').get(calendars.all);
-
-    app.get('/test', function(req, res) {
-        models.ExternalCalendar.addEvents(3, function(err, calendar) {
-            if(err) {
-                res.status(500).json(err);
-            } else {
-                res.json(calendar);
-            }
-        })
-    })
 };

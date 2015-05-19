@@ -38,8 +38,8 @@ module.exports = function(sequelize, DataTypes) {
         }
     }, {
         classMethods: {
-            associate: function(models) {
-                OauthProvider.belongsTo(models.User);
+            associate: function() {
+                OauthProvider.belongsTo(sequelize.models.User);
             }
         },
         instanceMethods: {

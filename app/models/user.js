@@ -57,11 +57,11 @@ module.exports = function(sequelize, DataTypes) {
             }
         },
         classMethods: {
-            associate: function(models) {
-                User.hasMany(models.Calendar, {
+            associate: function() {
+                User.hasMany(sequelize.models.Calendar, {
                     onDelete: 'CASCADE'
                 });
-                User.hasMany(models.OauthProvider, {
+                User.hasMany(sequelize.models.OauthProvider, {
                     onDelete: 'CASCADE'
                 });
             },
