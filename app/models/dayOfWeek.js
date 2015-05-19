@@ -14,7 +14,9 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         classMethods: {
             associate: function() {
-                DayOfWeek.belongsTo(sequelize.models.Calendar);
+                DayOfWeek.belongsTo(sequelize.models.Calendar, {
+                    onDelete: 'CASCADE'
+                });
                 DayOfWeek.hasMany(sequelize.models.Availability, {
                     onDelete: 'CASCADE'
                 });

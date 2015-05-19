@@ -32,7 +32,9 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         classMethods: {
             associate: function() {
-                Availability.belongsTo(sequelize.models.DayOfWeek);
+                Availability.belongsTo(sequelize.models.DayOfWeek, {
+                    onDelete: 'CASCADE'
+                });
             }
         }
     });

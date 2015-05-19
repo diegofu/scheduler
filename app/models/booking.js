@@ -27,7 +27,9 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         classMethods: {
             associate: function() {
-                Booking.belongsTo(sequelize.models.Calendar);
+                Booking.belongsTo(sequelize.models.Calendar, {
+                    onDelete: 'CASCADE'
+                });
             },
             createBooking: function(values, cb) {
                 this.create(values).then(function(booking) {

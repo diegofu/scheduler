@@ -33,7 +33,9 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         classMethods: {
             associate: function() {
-                ExternalCalendar.belongsTo(sequelize.models.Calendar);
+                ExternalCalendar.belongsTo(sequelize.models.Calendar, {
+                    onDelete: 'CASCADE'
+                });
             },
             getEvents: function(externalCalendarId, oauthProvider, cb) {
                 var that = this;
