@@ -37,10 +37,26 @@ module.exports = function(app) {
         .put(bookings.create);
 
 
-    app.route('/calendars/:calendarId/availableSlot/:availableSlotId')
+    app.route('/calendars/:calendarId/availableSlot/:availableSlotId?')
         .put(users.requiresLogin, calendars.hasAuthorization, function(req, res) {
             models.Availability.upsert(req.body).then(function(availableSlot) {
                 res.json(availableSlot);
+            }).catch(function(err) {
+                res.status(500).json(err);
+            })
+        })
+        .post(users.requiresLogin, calendars.hasAuthorization, function(req, res) {
+            models.DayOfWeek.find({
+                where: {
+                    CalendarId: req.calendar.id
+                }
+            }).then(function(dayOfWeek) {
+                var availableSlot = models.Availability.build(req.body);
+                availableSlot.set('DayOfWeekId', dayOfWeek.id);
+
+                availableSlot.save().then(function(availableSlot) {
+                    res.json(availableSlot);
+                })
             }).catch(function(err) {
                 res.status(500).json(err);
             })

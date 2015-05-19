@@ -29,8 +29,12 @@ module.exports = function(sequelize, DataTypes) {
             associate: function() {
                 Booking.belongsTo(sequelize.models.Calendar);
             },
-            createBooking: function(values, options) {
-                
+            createBooking: function(values, cb) {
+                this.create(values).then(function(booking) {
+                    sequelize.models.ExternalCalendar.addEvents(booking, cb);
+                }).catch(function(err) {
+                    cb(err, null);
+                })
             }
         }
     });

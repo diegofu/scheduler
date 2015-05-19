@@ -2,12 +2,13 @@ define([
     'underscore',
     'backbone',
     'moment',
+    'serializejson',
     'models/availableSlot',
     'collections/availabilities',
     'views/calendar/availableSlot',
     'views/booking/scheduler',
     'text!templates/Calendars/TimesTemplate.html'
-], function(_, Backbone, moment, AvailableSlot, AvailabilityCollection, AvailableSlotView, SchedulerView, TimesTemplate) {
+], function(_, Backbone, moment, serializeJSON, AvailableSlot, AvailabilityCollection, AvailableSlotView, SchedulerView, TimesTemplate) {
     var CalendarTimes = Backbone.View.extend({
         id: 'tab-content',
         initialize: function(options) {
@@ -34,11 +35,33 @@ define([
                     that.$el.append(that.schedulerView.render().el);
                 });
 
+                that.$('.datetimepicker').datetimepicker({
+                    format: 'H:mm',
+                });
+
                 that.availabilities.trigger('reset');
             })
 
             return this;
 
+        },
+        events: {
+            'submit #new-availability-form': 'addAvailability'
+        },
+        addAvailability: function(e) {
+            e.preventDefault();
+            console.log($(e.target).serializeJSON());
+            var availableSlot = new AvailableSlot({
+                calendarId: this.options.model.id
+            });
+            availableSlot.save($(e.target).serializeJSON(), {
+                success: function(model, response) {
+
+                },
+                error: function(model, response) {
+
+                }
+            });
         },
         addOne: function(availability) {
             var that = this;

@@ -1,12 +1,58 @@
 <div class="col-md-12">
-<h3>Set when you are available</h3>
+    <h3>Set when you are available</h3>
 
-<% availabilities.each(function(availability) { %>
-    <div class="row">
-        <div class="col-md-3">
-            <%= moment().day(availability.get('dayOfWeek')).format('dddd') %>
+    <% availabilities.each(function(availability) { %>
+        <div class="row">
+            <div class="col-md-3">
+                <%= moment().day(availability.get('dayOfWeek')).format('dddd') %>
+            </div>
+            <div id="availability-<%= availability.cid %>" class="col-md-9"></div>
         </div>
-        <div id="availability-<%= availability.cid %>" class="col-md-9"></div>
-    </div>
-<% }) %>
+    <% }) %>
+    <form class="row" id="new-availability-form">
+        <div class="col-md-12">
+            <h4>Add new availability:</h4>
+            <div class="col-sm-3 dp-container">
+            Start Time:
+                <div class="form-group">
+                    <div class="input-group date datetimepicker">
+                        <input type="text" class="form-control datetime" name="startTime" value="9:00">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-time"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 dp-container">
+            End Time:
+                <div class="form-group">
+                    <div class="input-group date datetimepicker">
+                        <input type="text" class="form-control datetime" name="endTime" value="18:00">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-time"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 dp-container">
+            Which day:
+                <div class="form-group">
+                    <div class="input-group">
+                        <select name="dayOfWeek" class="form-control">
+                            <option value="0">Sunday</option>
+                            <option value="1">Monday</option>
+                            <option value="2">Tuesday</option>
+                            <option value="3">Wednesday</option>
+                            <option value="4">Thusday</option>
+                            <option value="5">Friday</option>
+                            <option value="6">Saturday</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 dp-container">
+                <button class="btn btn-primary">Add</button>
+            </div>
+        </div>
+    </form>
 </div>

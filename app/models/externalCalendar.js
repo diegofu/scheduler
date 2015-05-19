@@ -35,15 +35,6 @@ module.exports = function(sequelize, DataTypes) {
             associate: function() {
                 ExternalCalendar.belongsTo(sequelize.models.Calendar);
             },
-            // addEvents: function(externalCalendarId, accessToken, cb) {
-            //     var google_calendar = new gcal.GoogleCalendar(accessToken);
-            //     google_calendar.events.list(externalCalendarId, function(err, calendarList) {
-            //         if(err) {
-
-            //         }
-            //         return cb(err, calendarList);
-            //     })
-            // },
             getEvents: function(externalCalendarId, oauthProvider, cb) {
                 var that = this;
                 var google_calendar = new gcal.GoogleCalendar(oauthProvider.accessToken);
@@ -67,12 +58,10 @@ module.exports = function(sequelize, DataTypes) {
                     }
                 })
             },
-            addEvents: function(calendarId, cb) {
-                // var that = this;
-                // var google_calendar = new gcal.GoogleCalendar(oauthProvider.accessToken);
+            addEvents: function(booking, cb) {
                 sequelize.models.Calendar.find({
                     where: {
-                        id: calendarId
+                        id: booking.CalendarId
                     },
                     include: [{
                             model: sequelize.models.User,
@@ -89,20 +78,20 @@ module.exports = function(sequelize, DataTypes) {
                     } else {
                         var exportEvents = function(_oauthProvider, cb) {
                             var google_calendar = new gcal.GoogleCalendar(_oauthProvider.accessToken);
-                            // google_calendar.events.list()
                             google_calendar.events.insert(calendar.ExternalCalendars[0].externalCalendarId, {
                                 start: {
-                                    dateTime: moment().format()
+                                    dateTime: moment.unix(booking.startTime).format()
                                 },
                                 end: {
-                                    dateTime: moment().add(1, 'hour').format()
+                                    dateTime: moment.unix(booking.endTime).format()
                                 },
-                                summary: 'Hell YES!!!'
-                            }, function(err, calendarList) {
+                                summary: booking.email,
+                                description: booking.notes
+                            }, function(err, event) {
                                 if(err) {
                                     return cb(err, null);
                                 } else {
-                                    return cb(null, calendarList);
+                                    return cb(null, event);
                                 }
                             })
                         }
@@ -113,52 +102,11 @@ module.exports = function(sequelize, DataTypes) {
                         } else {
                             exportEvents(oauthProvider, cb);
                         }
-                        // var google_calendar = new gcal.GoogleCalendar(oauthProvider.accessToken);
-                        // google_calendar.events.list()
-                        // google_calendar.events.list(externalCalendarId, function(err, calendarList) {
-                        //     if(err) {
-                        //         oauthProvider.getNewToken(function(err, newOauth) {
-                        //             if(err) {
-                        //                 return cb(err, null);
-                        //             }
-
-                        //             google_calendar = new gcal.GoogleCalendar(newOauth.accessToken);
-                        //             google_calendar.events.list(externalCalendarId, function(err, calendarList) {
-                        //                 if(err) {
-                        //                     return cb(err, null);
-                        //                 }
-                        //                 return cb(null, calendarList);
-                        //             })
-                        //         })
-                        //     } else {
-                        //         return cb(null, calendarList);
-                        //     }
-                        // })
-                        // cb(null, calendar);
                     }
                 }).catch(function(err) {
                     console.log(err);
                     cb(err, null);
                 })
-                // google_calendar.events.list(externalCalendarId, function(err, calendarList) {
-                //     if(err) {
-                //         oauthProvider.getNewToken(function(err, newOauth) {
-                //             if(err) {
-                //                 return cb(err, null);
-                //             }
-
-                //             google_calendar = new gcal.GoogleCalendar(newOauth.accessToken);
-                //             google_calendar.events.list(externalCalendarId, function(err, calendarList) {
-                //                 if(err) {
-                //                     return cb(err, null);
-                //                 }
-                //                 return cb(null, calendarList);
-                //             })
-                //         })
-                //     } else {
-                //         return cb(null, calendarList);
-                //     }
-                // })
             }
         }
     });

@@ -4,7 +4,11 @@ define(['underscore', 'backbone'], function(_, Backbone) {
             this.options = options;
         },
         url: function() {
-            return '/calendars/' + this.options.calendarId + '/availableSlot/' + this.get('id');
+            if(this.has('id')) {
+                return '/calendars/' + this.options.calendarId + '/availableSlot/' + this.get('id');
+            } else {
+                return '/calendars/' + this.options.calendarId + '/availableSlot';
+            }
         }
     });
 

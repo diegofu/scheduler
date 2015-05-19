@@ -78,8 +78,9 @@ exports.saveOAuthUserProfile = function(req, userProfile, done) {
                 }
             }]
         }).then(function(user) {
+            console.log(user);
             if (user) {
-                return done(null, user)
+                return done(null, user);
             } else {
                 return models.sequelize.transaction(function(t) {
                     return models.User.create(userProfile, {
@@ -88,9 +89,12 @@ exports.saveOAuthUserProfile = function(req, userProfile, done) {
                         userProfile.oauthProvider.UserId = user.getDataValue('id');
                         return models.OauthProvider.create(userProfile.oauthProvider, {
                             transaction: t
+                        }).then(function(){
+                            return user;
                         });
                     });
                 }).then(function(result) {
+                    console.log(result);
                     return done(null, result);
                 }).catch(function(err) {
                     return done(err, null);
