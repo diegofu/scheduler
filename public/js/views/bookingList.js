@@ -14,8 +14,9 @@ define([
             this.bookings.fetch().done(function() {
                 console.log(that.bookings);
             })
+
+            return this;
         }
-        
     });
 
     return BookingList;

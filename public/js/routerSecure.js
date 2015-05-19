@@ -39,7 +39,7 @@ define([
             'calendars/:id': 'editCalendar',
             'calendar/create': 'createCalendar',
             'scheduler/:id/:timestamp': 'schedulerBooking',
-
+            'bookings/list': 'bookingList',
             '': 'dashboard'
         }
     });
@@ -79,6 +79,13 @@ define([
                     timestamp: timestamp
                 });
                 $('.container').html(bookingView.render().el);
+            })
+        })
+
+        router.on('route:bookingList', function() {
+            require(['views/bookingList'], function(BookingListView) {
+                var bookingListView = new BookingListView();
+                $('.container').html(bookingListView.render().el);
             })
         })
 
