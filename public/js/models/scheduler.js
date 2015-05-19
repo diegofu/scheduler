@@ -27,10 +27,10 @@ define([
             var max = undefined;
             _.each(this.get('DayOfWeeks'), function(day) {
                 var tempMax = _.max(day.Availabilities, function(availability) {
-                    return moment(availability.startTime, 'H:mm').unix();
+                    return moment(availability.endTime, 'H:mm').unix();
                 });
 
-                if(max === undefined || moment(max.startTime, 'H:mm').unix() < moment(tempMax.startTime, 'H:mm').unix()) {
+                if(max === undefined || moment(max.endTime, 'H:mm').unix() < moment(tempMax.endTime, 'H:mm').unix()) {
                     max = tempMax;
                 }
             });

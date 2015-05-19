@@ -50,13 +50,19 @@ define([
         },
         addAvailability: function(e) {
             e.preventDefault();
-            console.log($(e.target).serializeJSON());
             var availableSlot = new AvailableSlot({
                 calendarId: this.options.model.id
             });
+            var that = this;
             availableSlot.save($(e.target).serializeJSON(), {
                 success: function(model, response) {
+                    // console.log(model);
+                    var parent = that.availabilities.findWhere({
+                        id: model.get('DayOfWeekId')
+                    });
 
+                    parent.get('Availabilities').push(model.attributes);
+                    that.addOne(parent);
                 },
                 error: function(model, response) {
 
@@ -65,6 +71,12 @@ define([
         },
         addOne: function(availability) {
             var that = this;
+            $('#availability-' + availability.cid).html('');
+
+            availability.get('Availabilities').sort(function(a, b) {
+                return moment(a.startTime, 'H:mm').unix() - moment(b.startTime, 'H:mm').unix();
+            })
+
             _.each(availability.get('Availabilities'), function(slot) {
                 var availableSlot = new AvailableSlot(_.extend(slot, {
                     calendarId: that.options.model.id

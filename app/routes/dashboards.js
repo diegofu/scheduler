@@ -1,15 +1,13 @@
 'use strict';
 
+var dashboard = require('../controllers/dashboards');
+var calendars = require('../controllers/calendars');
+var users = require('../controllers/users');
+var bookings = require('../controllers/bookings');
+var models = require('../models');
 
 // Everything in here should be secured
 module.exports = function(app) {
-    var dashboard = require('../controllers/dashboards');
-    var calendars = require('../controllers/calendars');
-    var users = require('../controllers/users');
-    var bookings = require('../controllers/bookings');
-    var models = require('../models');
-
-
     app.route('/dashboard').get(users.redirectLogin, function(req, res) {
         res.render('dashboard', {
             title: 'My Dashboard'

@@ -1,6 +1,5 @@
 'use strict';
 
-
 // User Routes
 var users = require('../controllers/users');
 var models = require('../models');
@@ -15,8 +14,6 @@ var refresh = require('google-refresh-token');
 var googleAuth = require('../../config/strategies/google');
 
 module.exports = function(app) {
-
-    // Setting up the users profile api
     app.route('/users/me').get(users.me);
     app.route('/users/signin').post(users.signin);
     app.route('/users').post(users.signup);
@@ -43,60 +40,6 @@ module.exports = function(app) {
             done(err, null)
         });
     });
-
-    passport.use(new LocalStrategy({
-            usernameField: 'email',
-            passwordField: 'password'
-        },
-        function(email, password, done) {
-            models.User.findOne({
-                where: {
-                    email: email
-                },
-            }).then(function(user) {
-                if (!user) {
-                    return done(null, false, {
-                        message: 'Unknown user or invalid password'
-                    });
-                }
-                if (!user.authenticate(password)) {
-                    return done(null, false, {
-                        message: 'Unknown user or invalid password'
-                    });
-                }
-
-                return done(null, user);
-            });
-        }
-    ));
-
-    // passport.use(new GoogleStrategy({
-    //         clientID: config.google.clientID,
-    //         clientSecret: config.google.clientSecret,
-    //         callbackURL: config.google.callbackURL,
-    //         passReqToCallback: true
-    //     },
-    //     function(req, accessToken, refreshToken, params, profile, done) {
-    //         var user = {
-    //             firstname: profile.name.givenName,
-    //             lastname: profile.name.familyName,
-    //             email: profile.emails[0].value,
-    //             provider: profile.provider,
-    //             oauthProvider: {
-    //                 providerUniqueId: profile.id,
-    //                 displayName: profile.displayName,
-    //                 provider: profile.provider,
-    //                 accessToken: accessToken,
-    //                 refreshToken: refreshToken,
-    //                 tokenType: params.token_type,
-    //                 idToken: params.id_token,
-    //                 expiresIn: params.expires_in
-    //             }
-    //         };
-
-    //         users.saveOAuthUserProfile(req, user, done);
-    //     }
-    // ));
 
     // Setting the google oauth routes
     app.route('/auth/google').get(passport.authenticate('google', {
